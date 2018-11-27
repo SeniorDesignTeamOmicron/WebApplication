@@ -1,0 +1,32 @@
+<nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #49274A;">
+    <a class="navbar-brand" href="{% url 'logisteps:index' %}">LogiSteps</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="">Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="">Global</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="">Connections</a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav pull-right" style="display: table">
+            {% if user.is_authenticated %}
+            <li class="nav-item" style="display: table-cell; vertical-align: middle; color: white">User: {{ user.get_username }}</li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout'%}?next={{request.path}}">Logout</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+ 
+
+
+
