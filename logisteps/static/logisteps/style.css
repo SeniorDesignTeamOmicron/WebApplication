@@ -1,4 +1,162 @@
+/*  `ROOT`
+------------------------------------------------------------------*/
+
+html {}
+
+
+
+/*  `TYPOGRAPHY` (Base)
+------------------------------------------------------------------*/
+
 body {
+  /* color: ; */
+  /*font: ;*/
+}
+h1, 
+h2, 
+h3, 
+h4, 
+h5, 
+h6 {
+  /* shared typographic styles */
+}
+h1 { 
+  /* font-size: ; */
+}
+h2 { 
+  /* font-size: ; */
+}
+h3 { 
+  /* font-size: ; */
+}
+h4 { 
+  /* font-size: ; */
+}
+h5 { 
+  /* font-size: ; */
+}
+h6 { 
+  /* font-size: ; */
+}
+
+p, 
+ol, 
+ul, 
+dl, 
+address { 
+  
+}
+ul, 
+ol { 
+  
+}
+ul {}
+ol {}
+li ul, 
+li ol { 
+  /* font-size: ;
+  margin: ; */
+}
+
+dl, 
+dd {}
+dt {}
+
+blockquote  {}
+
+b, 
+strong  {}
+i, 
+em {}
+
+sup, 
+sub { 
+  font-size: 75%; 
+  line-height: 0;
+  position: relative;
+}
+sup { 
+  top: -.5em;
+}
+sub { 
+  bottom: -.25em;
+}
+
+address {}
+
+pre { 
+  white-space: pre; 
+  white-space: pre-wrap; 
+  word-wrap: break-word;
+}
+
+pre, 
+code { 
+  font: .875em 'andale mono', 'lucida console', monospace; 
+  line-height: 1.5;
+}
+
+small {
+  /* font-size: ; */
+}
+
+
+/*  `BASE STYLES`
+------------------------------------------------------------------*/
+
+/*-- ~LINKS --*/
+
+/*-- ~FIGURES & IMAGES --*/
+
+/*-- ~TABLES --*/
+
+/*-- ~FORMS --*/
+input, select{
+    width: 100%;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button[type=submit],input[type=submit] {
+    width: 100%;
+    background-color: #49274A;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+}
+
+button[type=submit]:hover,input[type=submit]:hover {
+    background-color: rgba(73, 39, 74, 0.774)
+}
+
+/*  `HEADER`
+------------------------------------------------------------------*/
+
+
+/*  `FOOTER`
+------------------------------------------------------------------*/
+
+
+/*  `MAIN STRUCTURE`
+------------------------------------------------------------------*/
+
+
+/*  `GENERAL CONTENT`
+------------------------------------------------------------------*/
+
+
+/*  `SPECIFIC PAGE`
+------------------------------------------------------------------*/
+
+
+/*  `UTILITY STYLES`
+------------------------------------------------------------------*/
+.construction {
     background: url("images/Under-Construction-PNG-Clipart.png");
     background-repeat: no-repeat;
     background-size: 35%;
