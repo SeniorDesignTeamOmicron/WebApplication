@@ -1,8 +1,11 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    <h1>Logisteps Home</h1>
-    <p>Welcome to Logisteps, a website developed by <em>Team Omicron</em>!</p>
-    <p>Logisteps is currently under construction, and as a result, user experience may change
-        drastically from visit to visit.</p>
+  {% include "logisteps/topbar.html" %}
+    <div>
+      <h1>Logisteps Home</h1>
+      <p>Welcome to Logisteps, a website developed by <em>Team Omicron</em>!</p>
+      <p>Logisteps is currently under construction, and as a result, user experience may change
+          drastically from visit to visit.</p>
+    </div>
 {% endblock %}
