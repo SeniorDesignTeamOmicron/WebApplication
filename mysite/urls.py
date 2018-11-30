@@ -25,4 +25,5 @@ urlpatterns = [
     path('polls/', include('polls.urls')),
     path('logisteps/', include('logisteps.urls')),
     path('admin/', admin.site.urls),
+    path('api/', include('logisteps_api.urls'))
 ]
