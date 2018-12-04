@@ -3,8 +3,12 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Location(models.Model):
+    owner = models.ForeignKey('auth.User', related_name='locations', on_delete=models.CASCADE)
     latitude = models.FloatField()
     longitude = models.FloatField()
+
+    def save(self, *args, **kwargs):
+        super(Location, self).save(*args, **kwargs)
 
     def __str__(self):
         return 'ID: {}, Latitude: {}, Longitude: {}'.format(self.id, self.latitude, self.longitude)

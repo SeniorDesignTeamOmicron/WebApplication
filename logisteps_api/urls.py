@@ -24,9 +24,10 @@ router.register(r'users', UserViewSet)
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    path('location/<int:pk>/', views.LocationDetail.as_view()),
     path('location/', views.LocationList.as_view()),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('location/<int:pk>/', views.LocationDetail.as_view()),
+    path('users/', views.UserList.as_view()),
+    path('users/<int:pk>', views.UserDetail.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

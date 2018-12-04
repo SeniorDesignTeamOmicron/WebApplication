@@ -1,17 +1,32 @@
 from rest_framework import status
 from rest_framework.response import Response
 from logisteps.models import Location
-from logisteps_api.serializer import LocationSerializer
+from logisteps_api.serializer import LocationSerializer, UserSerializer
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework import mixins
 from rest_framework import generics
+from django.contrib.auth.models import User
+from rest_framework import permissions
+from logisteps_api.permissions import IsOwnerOrReadOnly
+
+class UserList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 class LocationList(mixins.ListModelMixin,
                    mixins.CreateModelMixin,
                    generics.GenericAPIView):
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,) #Authenticated users: read-write; others: read-only
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
@@ -38,6 +53,8 @@ class LocationDetail(mixins.RetrieveModelMixin,
                      generics.GenericAPIView):
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly)
 
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
