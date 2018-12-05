@@ -17,10 +17,7 @@ class UserList(generics.ListAPIView):
 
 class UserCreate(APIView):
     permission_classes = (permissions.AllowAny,)
-
-    def create(self, request, format=None):
-        print(request.data)
-    
+   
     def post(self, request, format=None):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
