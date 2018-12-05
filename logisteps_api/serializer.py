@@ -15,8 +15,31 @@ class ShoeSerializer(serializers.ModelSerializer):
         fields = ('size', 'is_left')
 
 class UserSerializer(serializers.ModelSerializer):
-    locations = serializers.PrimaryKeyRelatedField(many=True, queryset=Location.objects.all())
+    password = serializers.CharField(write_only=True)
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'locations')
+        fields = ('id', 'username', 'email', 'password')
+
+    def update(self, instance, validated_data):
+        instance.username = validated_data.get('username', instance.username)
+        instance.email = validated_data.get('email', instance.email)
+        instance.set_password(validated_data['password'])
+        instance.save()
+        return instance
+
+    def create(self, validated_data):
+        user = super(UserSerializer, self).create(validated_data)
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
+
+class LogistepsUserSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    left_shoe = ShoeSerializer()
+    right_shoe = ShoeSerializer()
+
+    class Meta:
+        model = LogistepsUser
+        fields = ('user', 'left_shoe', 'right_shoe')
+
