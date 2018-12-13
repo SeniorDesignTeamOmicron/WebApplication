@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
-from django.contrib.auth.forms import UserCreationForm
+from django.views.generic import View
 
 from .forms import CustomUserCreationForm
 
@@ -31,3 +31,8 @@ class IndexView(ProtectedView):
 
     def get(self, request, *args, **kwargs):
         return render(request, 'logisteps/index.html')
+
+class Dump(View):
+    def post(self, request):
+        print(request.body)
+        return HttpResponse("Success")

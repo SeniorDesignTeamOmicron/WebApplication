@@ -25,7 +25,7 @@ SECRET_KEY = '@3$f5pe3u$*6c=m_9qq_y36@eb78f%)hmn97!9k_8hvk^!1#*0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -43,9 +43,6 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication'
-    )
 }
 
 MIDDLEWARE = [
