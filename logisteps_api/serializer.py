@@ -25,8 +25,6 @@ class SensorReadingSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         shoe_data = validated_data.pop('shoe')
-        print('***********************')
-        print(shoe_data)
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -69,28 +67,21 @@ class LogistepsUserSerializer(serializers.ModelSerializer):
         return logistepsUser
 
 class StepSerializer(serializers.ModelSerializer):
-    # shoe = serializers.CharField()
     location = LocationSerializer()
     sensor_reading = SensorReadingSerializer()
 
     class Meta:
         model = Step
         fields = ('date', 'time', 'sensor_reading', 'location')
-
-    #def validate(self, data):
-
     
     def create(self, validated_data):
         location_data = validated_data.pop('location')
-        # shoe_data = validated_data.pop('shoe')
         sensor_reading_data = validated_data.pop('sensor_reading')
         shoe_data = sensor_reading_data.pop('shoe')
 
-        # print(shoe_data)
         username =  self.context['request'].user
         user = User.objects.get(username=username)
         logistepsUser = LogistepsUser.objects.get(user_id=user.id)
-        print(logistepsUser.id)
 
         if(shoe_data == "right"):
             shoe_obj = Shoe.objects.get(pk=logistepsUser.right_shoe_id)
@@ -98,8 +89,6 @@ class StepSerializer(serializers.ModelSerializer):
             shoe_obj = Shoe.objects.get(pk=logistepsUser.left_shoe_id)
 
         location = Location.objects.create(**location_data)
-        # sensor_reading_obj = SensorReadingSerializer.create(**sensor_reading_data)
-        print(sensor_reading_data)
         sensor_reading_obj = SensorReading.objects.create(**sensor_reading_data, shoe=shoe_obj)
         step = Step.objects.create(**validated_data, location=location, sensor_reading=sensor_reading_obj)
         return step

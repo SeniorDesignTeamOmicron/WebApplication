@@ -31,7 +31,7 @@ class UserDetail(mixins.RetrieveModelMixin,
                      generics.GenericAPIView):
     lookup_field = 'username'
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = LogistepsUserSerializer
     permission_classes = (UserDetailPermissions,)
 
     def get(self, request, *args, **kwargs):

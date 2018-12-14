@@ -31,8 +31,3 @@ class IndexView(ProtectedView):
 
     def get(self, request, *args, **kwargs):
         return render(request, 'logisteps/index.html')
-
-class Dump(View):
-    def post(self, request):
-        print(request.body)
-        return HttpResponse("Success")

@@ -5,5 +5,4 @@ app_name = 'logisteps'
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     path('register/', views.register, name='register'),
-    path('dump', views.Dump.as_view(), name='dump')
 ]
