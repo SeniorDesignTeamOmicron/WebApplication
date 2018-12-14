@@ -1,13 +1,18 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.forms import ModelForm
 from django import forms
 from django.core.exceptions import ValidationError
+
+from .models import Shoe, LogistepsUser
 
 class CustomUserCreationForm(forms.Form):
     username = forms.CharField(label='Enter Username', min_length=4, max_length=150)
     email = forms.EmailField(label='Enter email')
     password1 = forms.CharField(label='Enter password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Confirm password', widget=forms.PasswordInput)
+    shoe1 = forms.DecimalField(label='Left Shoe Size', min_value=4, max_value=16, max_digits=3, decimal_places=1)
+    shoe2 = forms.DecimalField(label='Right Shoe Size', min_value=4, max_value=16, max_digits=3, decimal_places=1)
 
     def clean_username(self):
         username = self.cleaned_data['username'].lower()
@@ -38,4 +43,12 @@ class CustomUserCreationForm(forms.Form):
             self.cleaned_data['email'],
             self.cleaned_data['password1']
         )
-        return user
+        lShoe = Shoe.objects.create(foot='L', size=self.cleaned_data['shoe1'])
+        rShoe = Shoe.objects.create(foot='R', size=self.cleaned_data['shoe2'])
+
+        logistepsUser = LogistepsUser.objects.create(left_shoe=lShoe, right_shoe=rShoe, user=user)
+        lShoe.save()
+        rShoe.save()
+        logistepsUser.save()
+
+        return logistepsUser

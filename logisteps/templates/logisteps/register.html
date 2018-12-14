@@ -22,18 +22,34 @@
                 </div>
             {% endif %}
 
-            {% for field in form.visible_fields %}
-                <div class="form-group">
-                    {{ field.label_tag }}
-
-                    {{ field }}
-
-                    {% if field.help_text %}
-                        <small class="form-text text-muted">{{ field.help_text }}</small>
-                    {% endif %}
+            <div class="form-group">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+            </div>
+            <div class="form-group">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+            </div>
+            <div class="form-group">
+                <div class="form-group shoe-input" style="float: left;">
+                    {{ form.shoe1.label_tag }}
+                    {{ form.shoe1 }}
                 </div>
-            {% endfor %}
+                <div class="form-group shoe-input" style="float: right;">
+                    {{ form.shoe2.label_tag }}
+                    {{ form.shoe2 }}
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form.password1.label_tag }}
+                {{ form.password1 }}
+            </div>
+            <div class="form-group">
+                {{ form.password2.label_tag }}
+                {{ form.password2 }}
+            </div>
 
+            
             <div><button type="submit" class="btn btn-lg btn-block">Submit</button></div>
         </form>
     </div>
