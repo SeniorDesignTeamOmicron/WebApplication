@@ -3,9 +3,12 @@
 {% block content %}
 
 <div class="register">
+    <div class="logo-banner">
+        <h1 class="logo-text">LogiSteps</h1>
+    </div>
     <div id="form">
-        <h1 class="center">Logisteps</h1>
-        <h3>Create Account</h3>
+        {% comment %} <h1 class="center">Logisteps</h1> {% endcomment %}
+        <h1>Create Account</h1>
 
         <form method="post">
             {% csrf_token %}
@@ -22,15 +25,17 @@
                 </div>
             {% endif %}
 
-            <div class="form-group">
-                {{ form.username.label_tag }}
-                {{ form.username }}
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    {{ form.username.label_tag }}
+                    {{ form.username }}
+                </div>
+                <div class="form-group col-sm-6">
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                </div>
             </div>
-            <div class="form-group">
-                {{ form.email.label_tag }}
-                {{ form.email }}
-            </div>
-            <div class="form-group">
+            {% comment %} <div class="form-group">
                 <div class="form-group shoe-input" style="float: left;">
                     {{ form.shoe1.label_tag }}
                     {{ form.shoe1 }}
@@ -38,6 +43,16 @@
                 <div class="form-group shoe-input" style="float: right;">
                     {{ form.shoe2.label_tag }}
                     {{ form.shoe2 }}
+                </div>
+            </div> {% endcomment %}
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    {{ form.first_name.label_tag }}
+                    {{ form.first_name }}
+                </div>
+                <div class="form-group col-sm-6">
+                    {{ form.last_name.label_tag }}
+                    {{ form.last_name }}
                 </div>
             </div>
             <div class="form-group">

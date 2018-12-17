@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.contrib.auth import views as auth_views
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
@@ -14,7 +15,9 @@ def register(request):
     if request.method == 'POST':
         f = CustomUserCreationForm(request.POST)
         if f.is_valid():
-            f.save()
+            user = f.save()
+
+            login(request, user)
             return redirect('logisteps:index')
 
     else:
@@ -31,3 +34,9 @@ class IndexView(ProtectedView):
 
     def get(self, request, *args, **kwargs):
         return render(request, 'logisteps/index.html')
+
+class CompleteProfile(ProtectedView):
+    template_name = 'complete_profile.html'
+
+    def post(self, request, *args, **kwargs):
+        return render(request, 'logisteps/profile/complete.html')

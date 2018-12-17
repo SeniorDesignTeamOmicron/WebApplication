@@ -12,32 +12,6 @@ body {
   /* color: ; */
   /*font: ;*/
 }
-h1, 
-h2, 
-h3, 
-h4, 
-h5, 
-h6 {
-  /* shared typographic styles */
-}
-h1 { 
-  /* font-size: ; */
-}
-h2 { 
-  /* font-size: ; */
-}
-h3 { 
-  /* font-size: ; */
-}
-h4 { 
-  /* font-size: ; */
-}
-h5 { 
-  /* font-size: ; */
-}
-h6 { 
-  /* font-size: ; */
-}
 
 p, 
 ol, 
@@ -115,8 +89,13 @@ input, select{
     width: 100%;
     display: inline-block;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 1px;
+    height: 40px;
     box-sizing: border-box;
+}
+
+label {
+  font-family: 'Roboto', sans-serif;
 }
 
 button[type=submit],input[type=submit] {

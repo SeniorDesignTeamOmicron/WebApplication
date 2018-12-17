@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
     <!-- Add additional CSS in static file -->
     {% load static %}
     <link rel="stylesheet" href="{% static 'logisteps/style.css' %}">
@@ -12,8 +15,15 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.8.1/less.min.js" ></script>
   </head>
   <body>
-    <div class="container-full">
-      {% block content %}{% endblock %}
+    <div class="stretch-container">
+      <header>
+          {% if user.is_authenticated %}
+              {% include "logisteps/topbar.html" %}
+          {% endif %}
+      </header>
+      <section>
+          {% block content %}{% endblock %}
+      </section>
     </div>
   </body>
 </html>

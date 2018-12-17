@@ -1,5 +1,36 @@
+html, body {
+    height: 100%;
+}
+
+.stretch-container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    height: 100%;
+
+    header {
+        flex: 0 1 auto;
+    }
+
+    section {
+        flex: 1 1 auto;
+    }
+}
+
+.logo-banner {
+    background-color: rgba(73,39,74,0.5);
+}
+
+.logo-text {
+    font-family: 'Work Sans', sans-serif;
+    color: lightgray;
+    font-size: 40px;
+}
+
 .login, .register {
-    background-color: #49274A;
+    // background-color: #49274A;
+    background-image: url(../images/splash.jpg);
+    background-size: cover;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -9,12 +40,18 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 350px;
-        margin-top:  -281.64px;
-        margin-left: -175px;
+        width: 500px;
+        margin-top:  -230px;
+        margin-left: -250px;
         padding: 10px;
-        background-color: lightgray;
+        background-color: rgba(211,211,211,0.4);
         border-radius: 5px;
+        font-family: 'Roboto', sans-serif;
+        font-weight: bold;
+
+        input {
+            background-color: rgba(255,255,255,0.5);
+        }
     }
 }
 
@@ -35,7 +72,6 @@
 
 .sidenav {
     height: 100%;
-    position: fixed;
     z-index: 1;
     left: 0;
     background-color: lightgray;
@@ -59,6 +95,10 @@
     p {
         margin: 0px;
         font-size: small;
+
+        a {
+            color: #0062cc;
+        }
     }
 }
 

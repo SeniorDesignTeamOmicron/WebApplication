@@ -7,12 +7,14 @@ from django.core.exceptions import ValidationError
 from .models import Shoe, LogistepsUser
 
 class CustomUserCreationForm(forms.Form):
-    username = forms.CharField(label='Enter Username', min_length=4, max_length=150)
-    email = forms.EmailField(label='Enter email')
+    username = forms.CharField(label='Username', min_length=4, max_length=150)
+    email = forms.EmailField(label='Email')
+    first_name = forms.CharField(label="Firstname", max_length=50)
+    last_name = forms.CharField(label="Lastname", max_length=50)
     password1 = forms.CharField(label='Enter password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Confirm password', widget=forms.PasswordInput)
-    shoe1 = forms.DecimalField(label='Left Shoe Size', min_value=4, max_value=16, max_digits=3, decimal_places=1)
-    shoe2 = forms.DecimalField(label='Right Shoe Size', min_value=4, max_value=16, max_digits=3, decimal_places=1)
+    # shoe1 = forms.DecimalField(label='Left Shoe Size', min_value=4, max_value=16, max_digits=3, decimal_places=1)
+    # shoe2 = forms.DecimalField(label='Right Shoe Size', min_value=4, max_value=16, max_digits=3, decimal_places=1)
 
     def clean_username(self):
         username = self.cleaned_data['username'].lower()
@@ -41,14 +43,19 @@ class CustomUserCreationForm(forms.Form):
         user = User.objects.create_user(
             self.cleaned_data['username'],
             self.cleaned_data['email'],
+            self.cleaned_data['first_name'],
+            self.cleaned_data['last_name'],
             self.cleaned_data['password1']
         )
-        lShoe = Shoe.objects.create(foot='L', size=self.cleaned_data['shoe1'])
-        rShoe = Shoe.objects.create(foot='R', size=self.cleaned_data['shoe2'])
+        # lShoe = Shoe.objects.create(foot='L', size=self.cleaned_data['shoe1'])
+        # rShoe = Shoe.objects.create(foot='R', size=self.cleaned_data['shoe2'])
 
-        logistepsUser = LogistepsUser.objects.create(left_shoe=lShoe, right_shoe=rShoe, user=user)
-        lShoe.save()
-        rShoe.save()
-        logistepsUser.save()
+        # logistepsUser = LogistepsUser.objects.create(left_shoe=lShoe, right_shoe=rShoe, user=user)
+        # lShoe.save()
+        # rShoe.save()
+        # logistepsUser.save()
 
-        return logistepsUser
+        # return logistepsUser
+        return user
+
+# class UserCompletionForm(forms.Form):
