@@ -1,0 +1,66 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<div class="register">
+    <div class="logo-banner">
+        <h1 class="logo-text">LogiSteps</h1>
+    </div>
+    <div id="form">
+        <h1>Hi {{ user.get_username }}!</h1>
+        <h2>Let's Complete your Profile.</h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% for hidden_field in form.hidden_fields %}
+                {{ hidden_field }}
+            {% endfor %}
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger" role="alert">
+                {% for error in form.non_field_errors %}
+                    {{ error }}
+                {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    {{ form.left_shoe.label_tag }}
+                    {{ form.left_shoe }}
+                </div>
+                <div class="form-group col-sm-6">
+                    {{ form.right_shoe.label_tag }}
+                    {{ form.right_shoe }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    {{ form.height_feet.label_tag }}
+                    {{ form.height_feet }}
+                </div>
+                <div class="form-group col-sm-6">
+                    {{ form.height_inches.label_tag }}
+                    {{ form.height_inches }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    {{ form.weight.label_tag }}
+                    {{ form.weight }}
+                </div>
+                <div class="form-group col-sm-6">
+                    {{ form.step_goal.label_tag }}
+                    {{ form.step_goal }}
+                </div>
+            </div>
+
+            
+            <div><button type="submit" class="btn btn-lg btn-block">Complete</button></div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+

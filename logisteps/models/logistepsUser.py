@@ -6,6 +6,9 @@ from .shoe import Shoe
 
 class LogistepsUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    height = models.IntegerField()
+    weight = models.IntegerField()
+    step_goal = models.IntegerField()
     left_shoe = models.OneToOneField(
         Shoe,
         related_name='user_left_shoe',

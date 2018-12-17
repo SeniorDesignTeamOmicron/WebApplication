@@ -41,11 +41,11 @@ class CustomUserCreationForm(forms.Form):
     
     def save(self, commit=True):
         user = User.objects.create_user(
-            self.cleaned_data['username'],
-            self.cleaned_data['email'],
-            self.cleaned_data['first_name'],
-            self.cleaned_data['last_name'],
-            self.cleaned_data['password1']
+            username=self.cleaned_data['username'],
+            email=self.cleaned_data['email'],
+            first_name=self.cleaned_data['first_name'],
+            last_name=self.cleaned_data['last_name'],
+            password=self.cleaned_data['password1']
         )
         # lShoe = Shoe.objects.create(foot='L', size=self.cleaned_data['shoe1'])
         # rShoe = Shoe.objects.create(foot='R', size=self.cleaned_data['shoe2'])
@@ -58,4 +58,29 @@ class CustomUserCreationForm(forms.Form):
         # return logistepsUser
         return user
 
-# class UserCompletionForm(forms.Form):
+class UserCompletionForm(forms.Form):
+    left_shoe = forms.DecimalField(label='Left Shoe Size', min_value=4, max_value=16, max_digits=3, decimal_places=1)
+    right_shoe = forms.DecimalField(label='Right Shoe Size', min_value=4, max_value=16, max_digits=3, decimal_places=1)
+    height_feet = forms.IntegerField(label='Height (ft.)', min_value=0, required=True)
+    height_inches = forms.IntegerField(label='Height (in.)', min_value=0, max_value=12, required=True)
+    weight = forms.IntegerField(min_value=0, required=True)
+    step_goal = forms.IntegerField(label='Step Goal', min_value=0, required=True)
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(UserCompletionForm, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        lShoe = Shoe.objects.create(foot='L', size=self.cleaned_data['left_shoe'])
+        rShoe = Shoe.objects.create(foot='R', size=self.cleaned_data['right_shoe'])
+
+        height = self.cleaned_data['height_feet'] * 12 + self.cleaned_data['height_inches']
+
+        logistepsUser = LogistepsUser.objects.create(left_shoe=lShoe, right_shoe=rShoe, height=height,
+             weight=self.cleaned_data['weight'], step_goal=self.cleaned_data['step_goal'], user=self.user)
+
+        lShoe.save()
+        rShoe.save()
+        logistepsUser.save()
+
+        return logistepsUser

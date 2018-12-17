@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.contrib.auth import views as auth_views
@@ -8,7 +9,8 @@ from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from django.views.generic import View
 
-from .forms import CustomUserCreationForm
+from .models import LogistepsUser
+from .forms import CustomUserCreationForm, UserCompletionForm
 
 # Create your views here.
 def register(request):
@@ -18,10 +20,12 @@ def register(request):
             user = f.save()
 
             login(request, user)
-            return redirect('logisteps:index')
+            print('Form is valid')
+            return redirect('/logisteps/profile/complete/')
 
     else:
         f = CustomUserCreationForm()
+        print("Form not valid")
 
     return render(request, 'logisteps/register.html', {'form': f})
 
@@ -35,8 +39,16 @@ class IndexView(ProtectedView):
     def get(self, request, *args, **kwargs):
         return render(request, 'logisteps/index.html')
 
-class CompleteProfile(ProtectedView):
-    template_name = 'complete_profile.html'
+@login_required
+def completeProfile(request):
+    if request.method == 'POST':
+        f = UserCompletionForm(request.user, request.POST)
+        if f.is_valid():
+            f.save()
 
-    def post(self, request, *args, **kwargs):
-        return render(request, 'logisteps/profile/complete.html')
+            return redirect('/logisteps/')
+
+    else:
+        f = UserCompletionForm(request.user)
+
+    return render(request, 'logisteps/complete_profile.html', {'form': f})
