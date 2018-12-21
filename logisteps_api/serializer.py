@@ -15,6 +15,14 @@ class ShoeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shoe
         fields = ('size', 'foot')
+    
+    def update(self, instance, validated_data):
+        instance.size = validated_data.get('size', instance.size)
+        instance.foot = validated_data.get('foot', instance.foot)
+
+        instance.save()
+
+        return instance
 
 class SensorReadingSerializer(serializers.ModelSerializer):
     shoe = serializers.CharField()
@@ -39,6 +47,8 @@ class UserSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         instance.username = validated_data.get('username', instance.username)
         instance.email = validated_data.get('email', instance.email)
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.set_password(validated_data['password'])
         instance.save()
         return instance
@@ -71,24 +81,17 @@ class LogistepsUserSerializer(serializers.ModelSerializer):
         return logistepsUser
 
     def update(self, instance, validated_data):
-        username = validated_data.get('user', instance.user)["username"]
-        user = User.objects.get(username=username)
-        user.first_name = validated_data.get('user', instance.user)["first_name"]
-        user.last_name = validated_data.get('user', instance.user)["last_name"]
-        user.email = validated_data.get('user', instance.user)["email"]
-        user.set_password(validated_data.get('user', instance.user)["password"])
-        user.save()
+        user_data = validated_data.pop('user')
+        user_obj = User.objects.get(username=user_data["username"])
+        instance.user = UserSerializer.update(UserSerializer(), user_obj, user_data)
 
-        logistepsUser_obj = LogistepsUser.objects.get(user_id=user.id)
-
+        logistepsUser_obj = LogistepsUser.objects.get(user_id=user_obj.id)
 
         left_shoe_obj = Shoe.objects.get(id=logistepsUser_obj.left_shoe_id)
-        left_shoe_obj.size = validated_data.get('left_shoe', instance.left_shoe)["size"]
-        left_shoe_obj.save()
+        instance.left_shoe = ShoeSerializer.update(ShoeSerializer(), left_shoe_obj, validated_data.pop('left_shoe'))
 
         right_shoe_obj = Shoe.objects.get(id=logistepsUser_obj.right_shoe_id)
-        right_shoe_obj.size = validated_data.get('right_shoe', instance.right_shoe)["size"]
-        right_shoe_obj.save()
+        instance.right_shoe = ShoeSerializer.update(ShoeSerializer(), right_shoe_obj, validated_data.pop('right_shoe'))
 
         instance.height = validated_data.get('height', instance.height)
         instance.weight = validated_data.get('weight', instance.weight)
