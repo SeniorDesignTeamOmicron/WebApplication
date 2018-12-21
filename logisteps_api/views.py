@@ -1,6 +1,6 @@
 from rest_framework import status
 from rest_framework.response import Response
-from logisteps.models import Location, Step
+from logisteps.models import Location, Step, LogistepsUser
 from logisteps_api.serializer import LocationSerializer, UserSerializer, LogistepsUserSerializer, StepSerializer
 from django.http import Http404
 from rest_framework.views import APIView
@@ -11,8 +11,8 @@ from rest_framework import permissions
 from logisteps_api.permissions import IsOwnerOrReadOnly, IsOwner, UserDetailPermissions
 
 class UserList(generics.ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+    queryset = LogistepsUser.objects.all()
+    serializer_class = LogistepsUserSerializer
     permission_classes = (permissions.IsAdminUser,)
 
 class UserCreate(APIView):
@@ -31,7 +31,25 @@ class UserDetail(mixins.RetrieveModelMixin,
                      generics.GenericAPIView):
     lookup_field = 'username'
     queryset = User.objects.all()
+    serializer_class = User
+    permission_classes = (UserDetailPermissions,)
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
+class LogistepsUserDetail(mixins.RetrieveModelMixin,
+                     mixins.UpdateModelMixin,
+                     mixins.DestroyModelMixin,
+                     generics.GenericAPIView):
+    queryset = LogistepsUser.objects.all().select_related('user')
     serializer_class = LogistepsUserSerializer
+    lookup_field = 'user__username'
     permission_classes = (UserDetailPermissions,)
 
     def get(self, request, *args, **kwargs):

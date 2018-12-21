@@ -150,12 +150,12 @@
 							"type": "basic",
 							"basic": [
 								{
-									"key": "username",
+									"key": "password",
 									"value": "",
 									"type": "string"
 								},
 								{
-									"key": "password",
+									"key": "username",
 									"value": "",
 									"type": "string"
 								}
@@ -210,7 +210,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"user\": {\n\t\t\"username\": \"larsonm22\",\n\t\t\"email\": \"test@aol.com\",\n\t\t\"password\": \"test\"\n\t},\n\t\"right_shoe\": {\n\t\t\"foot\": \"R\",\n\t\t\"size\": 8.5\n\t},\n\t\"left_shoe\":{\n\t\t\"foot\": \"L\",\n\t\t\"size\": 8.5\n\t}\n}"
+							"raw": "{\n\t\"user\": {\n\t\t\"username\": \"test6\",\n\t\t\"email\": \"test@aol.com\",\n\t\t\"first_name\": \"Mitchell\",\n\t\t\"last_name\": \"Larson\",\n\t\t\"password\": \"test\"\n\t},\n\t\"right_shoe\": {\n\t\t\"foot\": \"R\",\n\t\t\"size\": 8.5\n\t},\n\t\"left_shoe\":{\n\t\t\"foot\": \"L\",\n\t\t\"size\": 8.5\n\t},\n\t\"height\": 67,\n\t\"weight\": 165,\n\t\"step_goal\": 10000\n}"
 						},
 						"url": {
 							"raw": "http://127.0.0.1:8000/api/user/",
@@ -238,12 +238,12 @@
 							"type": "basic",
 							"basic": [
 								{
-									"key": "password",
+									"key": "username",
 									"value": "",
 									"type": "string"
 								},
 								{
-									"key": "username",
+									"key": "password",
 									"value": "",
 									"type": "string"
 								}
@@ -256,7 +256,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/user/larsonm2/",
+							"raw": "http://127.0.0.1:8000/api/user/test6/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -268,7 +268,7 @@
 							"path": [
 								"api",
 								"user",
-								"larsonm2",
+								"test6",
 								""
 							]
 						}
@@ -282,12 +282,12 @@
 							"type": "basic",
 							"basic": [
 								{
-									"key": "username",
+									"key": "password",
 									"value": "",
 									"type": "string"
 								},
 								{
-									"key": "password",
+									"key": "username",
 									"value": "",
 									"type": "string"
 								}
@@ -304,10 +304,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"username\": \"larsonm22\",\n\t\"email\": \"larsonm3@gmail.com\",\n\t\"password\": \"Huskies33\"\n}"
+							"raw": "{\n\t\"user\": {\n\t\t\"username\": \"test6\",\n\t\t\"email\": \"dallas@aol.com\",\n\t\t\"first_name\": \"Dallas\",\n\t\t\"last_name\": \"Larson\",\n\t\t\"password\": \"test\"\n\t},\n\t\"right_shoe\": {\n\t\t\"foot\": \"R\",\n\t\t\"size\": 11.5\n\t},\n\t\"left_shoe\":{\n\t\t\"foot\": \"L\",\n\t\t\"size\": 8.5\n\t},\n\t\"height\": 67,\n\t\"weight\": 165,\n\t\"step_goal\": 10000\n}"
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/user/admin/",
+							"raw": "http://127.0.0.1:8000/api/user/test6/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -319,7 +319,7 @@
 							"path": [
 								"api",
 								"user",
-								"admin",
+								"test6",
 								""
 							]
 						}
@@ -351,7 +351,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/user/admin/",
+							"raw": "http://127.0.0.1:8000/api/user/test6/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -363,7 +363,7 @@
 							"path": [
 								"api",
 								"user",
-								"admin",
+								"test6",
 								""
 							]
 						}

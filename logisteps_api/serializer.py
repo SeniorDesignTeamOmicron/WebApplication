@@ -31,7 +31,10 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'password')
+        fields = ('id', 'username', 'email', 'password', 'first_name', 'last_name')
+        extra_kwargs = {
+            'username': {'validators': []},
+        }
 
     def update(self, instance, validated_data):
         instance.username = validated_data.get('username', instance.username)
@@ -53,7 +56,8 @@ class LogistepsUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = LogistepsUser
-        fields = ('user', 'left_shoe', 'right_shoe')
+        fields = ('user', 'left_shoe', 'right_shoe', 'height', 'weight', 'step_goal')
+        lookup_field = 'user__username'
     
     def create(self, validated_data):
         user_data = validated_data.pop('user')
@@ -63,8 +67,35 @@ class LogistepsUserSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**user_data)
         right_shoe = Shoe.objects.create(**right_shoe_data)
         left_shoe = Shoe.objects.create(**left_shoe_data)
-        logistepsUser = LogistepsUser.objects.create(user=user, right_shoe=right_shoe, left_shoe=left_shoe)
+        logistepsUser = LogistepsUser.objects.create(user=user, right_shoe=right_shoe, left_shoe=left_shoe, **validated_data)
         return logistepsUser
+
+    def update(self, instance, validated_data):
+        username = validated_data.get('user', instance.user)["username"]
+        user = User.objects.get(username=username)
+        user.first_name = validated_data.get('user', instance.user)["first_name"]
+        user.last_name = validated_data.get('user', instance.user)["last_name"]
+        user.email = validated_data.get('user', instance.user)["email"]
+        user.set_password(validated_data.get('user', instance.user)["password"])
+        user.save()
+
+        logistepsUser_obj = LogistepsUser.objects.get(user_id=user.id)
+
+
+        left_shoe_obj = Shoe.objects.get(id=logistepsUser_obj.left_shoe_id)
+        left_shoe_obj.size = validated_data.get('left_shoe', instance.left_shoe)["size"]
+        left_shoe_obj.save()
+
+        right_shoe_obj = Shoe.objects.get(id=logistepsUser_obj.right_shoe_id)
+        right_shoe_obj.size = validated_data.get('right_shoe', instance.right_shoe)["size"]
+        right_shoe_obj.save()
+
+        instance.height = validated_data.get('height', instance.height)
+        instance.weight = validated_data.get('weight', instance.weight)
+        instance.step_goal = validated_data.get('step_goal', instance.step_goal)
+
+        instance.save()
+        return instance
 
 class StepSerializer(serializers.ModelSerializer):
     location = LocationSerializer()

@@ -31,4 +31,4 @@ class UserDetailPermissions(permissions.BasePermission):
         if request.method == 'POST':
             return True
         else:
-            return obj == request.user or request.user.is_superuser
+            return obj.user == request.user or request.user.is_superuser
