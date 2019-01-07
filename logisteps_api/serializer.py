@@ -2,6 +2,7 @@ from rest_framework import serializers
 from logisteps.models import Location, Shoe, Step, LogistepsUser, SensorReading
 from django.contrib.auth.models import User
 from rest_framework.fields import CurrentUserDefault
+from mysite import settings
 
 class LocationSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
@@ -103,10 +104,11 @@ class LogistepsUserSerializer(serializers.ModelSerializer):
 class StepSerializer(serializers.ModelSerializer):
     location = LocationSerializer()
     sensor_reading = SensorReadingSerializer()
+    datetime = serializers.DateTimeField(format='iso-8601')
 
     class Meta:
         model = Step
-        fields = ('date', 'time', 'sensor_reading', 'location')
+        fields = ('datetime', 'sensor_reading', 'location')
     
     def create(self, validated_data):
         location_data = validated_data.pop('location')
@@ -124,5 +126,7 @@ class StepSerializer(serializers.ModelSerializer):
 
         location = Location.objects.create(**location_data)
         sensor_reading_obj = SensorReading.objects.create(**sensor_reading_data, shoe=shoe_obj)
-        step = Step.objects.create(**validated_data, location=location, sensor_reading=sensor_reading_obj)
+        step = Step.objects.create(**validated_data, user=logistepsUser, location=location, sensor_reading=sensor_reading_obj)
         return step
+
+# class StepSummary(serializers.BaseSerializer):

@@ -36,6 +36,14 @@ class ProtectedView(TemplateView):
 class IndexView(ProtectedView):
     template_name = 'index.html'
 
+    # def dispatch(self, request, *args, **kwargs):
+    #     # parse the request here ie.
+    #     self.logistepsUser = request.GET.get('user', None)
+    #     print(self.logistepsUser)
+
+    #     # call the view
+    #     return super(IndexView, self).dispatch(request, *args, **kwargs)
+
     def get(self, request, *args, **kwargs):
         return render(request, 'logisteps/index.html')
 

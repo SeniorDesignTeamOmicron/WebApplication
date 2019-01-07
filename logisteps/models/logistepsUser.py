@@ -30,3 +30,9 @@ class LogistepsUser(models.Model):
     @property
     def user__username(self):
         return self.user.username
+    
+    def delete(self, *args, **kwargs):
+        self.user.delete()
+        self.left_shoe.delete()
+        self.right_shoe.delete()
+        return super().delete(*args, **kwargs)
