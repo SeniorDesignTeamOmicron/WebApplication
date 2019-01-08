@@ -11,6 +11,7 @@ from rest_framework import permissions
 from logisteps_api.permissions import IsOwnerOrReadOnly, IsOwner, UserDetailPermissions
 from django.db.models import Q
 from datetime import datetime
+from utils.step_utils import getMostActiveHour, getLeastActiveHour, getInactiveTime
 
 class UserList(generics.ListAPIView):
     queryset = LogistepsUser.objects.all()
@@ -139,7 +140,7 @@ class StepsListByDay(mixins.ListModelMixin,
         by filtering against a `username` query parameter in the URL.
         """
         queryset = Step.objects.all()
-        query_date = self.request.query_params.get('date', None)
+        query_date = self.request.query_params.get('date', None) #TODO Perform date validation
 
         if query_date is None:
             query_date = datetime.today()
@@ -169,11 +170,24 @@ class StepSummary(StepsListByDay):
         goal = logistepsUser.step_goal
         percent_complete = float(steps)/goal * 100
 
+        most_active_hour = getMostActiveHour(queryset)
+        least_active_hour = getLeastActiveHour(queryset)
+        inactive_time = getInactiveTime(queryset)
+
         # do statistics here, e.g.
         stats = {
             'steps': steps,
             'goal': goal,
-            'percent': percent_complete
+            'percent': percent_complete,
+            'least_active': {
+                'hour': least_active_hour.get('datetime__hour'),
+                'steps': least_active_hour.get('id__count')
+            },
+            'most_active': {
+                'hour': most_active_hour.get('datetime__hour'),
+                'steps': most_active_hour.get('id__count')
+            },
+            'inactive_time': inactive_time
         }
 
         # not using a serializer here since it is already a 
