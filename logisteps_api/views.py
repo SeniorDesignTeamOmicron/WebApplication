@@ -11,7 +11,7 @@ from rest_framework import permissions
 from logisteps_api.permissions import IsOwnerOrReadOnly, IsOwner, UserDetailPermissions
 from django.db.models import Q
 from datetime import datetime
-from utils.step_utils import getMostActiveHour, getLeastActiveHour, getInactiveTime
+from utils.step_utils import getMostActiveHour, getLeastActiveHour, getInactiveTime, avgStepsPerHour
 
 class UserList(generics.ListAPIView):
     queryset = LogistepsUser.objects.all()
@@ -173,6 +173,7 @@ class StepSummary(StepsListByDay):
         most_active_hour = getMostActiveHour(queryset)
         least_active_hour = getLeastActiveHour(queryset)
         inactive_time = getInactiveTime(queryset)
+        steps_per_hour = avgStepsPerHour(queryset, self.request.query_params.get('date', datetime.now().date()))
 
         # do statistics here, e.g.
         stats = {
@@ -187,7 +188,8 @@ class StepSummary(StepsListByDay):
                 'hour': most_active_hour.get('datetime__hour'),
                 'steps': most_active_hour.get('id__count')
             },
-            'inactive_time': inactive_time
+            'inactive_time': inactive_time,
+            'steps_per_hour': steps_per_hour
         }
 
         # not using a serializer here since it is already a 

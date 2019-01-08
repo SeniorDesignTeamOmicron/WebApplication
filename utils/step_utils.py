@@ -36,3 +36,15 @@ def getInactiveTime(queryset):
         'hours': hours,
         'minutes': minutes
     }
+
+def avgStepsPerHour(queryset, date):
+    steps = queryset.count()
+    now = datetime.now()
+
+    if date == now.date():
+        hours_elapsed = now - now.replace(hour=0, minute=0, second=0, microsecond=0).total_hours()
+        steps_per_hour = steps / hours_elapsed
+    else:
+        steps_per_hour = steps / 24
+    
+    return steps_per_hour
