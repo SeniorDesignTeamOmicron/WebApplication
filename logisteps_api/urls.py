@@ -8,6 +8,8 @@ from . import views
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
+app_name = 'logisteps_api'
+
 urlpatterns = [
     path('location/', views.LocationList.as_view()),
     path('location/<int:pk>/', views.LocationDetail.as_view()),
@@ -16,7 +18,7 @@ urlpatterns = [
     path('user/<str:user__username>/', views.LogistepsUserDetail.as_view()),
     path('steps/', views.StepList.as_view()),
     path('steps/steplist/', views.StepsListByDay.as_view()),
-    path('steps/summary/', views.StepSummary.as_view())
+    path('steps/summary/', views.StepSummary.as_view(), name='summary')
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

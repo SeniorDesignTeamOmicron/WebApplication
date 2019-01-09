@@ -60,3 +60,9 @@ def completeProfile(request):
         f = UserCompletionForm(request.user)
 
     return render(request, 'logisteps/complete_profile.html', {'form': f})
+
+class RecentView(ProtectedView):
+    template_name = 'recent.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, 'logisteps/recent.html')

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script src="https://d3js.org/d3.v5.min.js"></script>
+    {% comment %} <script src="https://d3js.org/d3.v5.min.js"></script> {% endcomment %}
     <link href="https://fonts.googleapis.com/css?family=Work+Sans:800" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700" rel="stylesheet">
     <!-- Add additional CSS in static file -->
@@ -13,6 +13,12 @@
     <link rel="stylesheet" href="{% static 'logisteps/style.css' %}">
     <link rel="stylesheet/less" type="text/css" href="{% static 'logisteps/less/styles.less' %}" />
     <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.8.1/less.min.js" ></script>
+    <link href="{% static 'logisteps/css/c3.css' rel='stylesheet' %}">
+
+    <!-- Load d3.js and c3.js -->
+    <script src="{% static 'logisteps/js/d3.min.js' charset='utf-8' %}"></script>
+    <script src="{% static 'logisteps/js/c3.min.js' %}"></script>
+    <script src="{% static 'logisteps/js/donut_chart.js' %}"></script>
   </head>
   <body>
     <div class="stretch-container">

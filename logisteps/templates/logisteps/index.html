@@ -6,10 +6,11 @@
       {% include "logisteps/sidebar.html" %}
     </div>
     <div class="col-sm-10">
-      <h1>Welcome back {{ user.get_username }}!</h1>
+      {% comment %} <h1>Welcome back {{ user.get_username }}!</h1>
       <p>Welcome to Logisteps, a website developed by <em>Team Omicron</em>!</p>
       <p>Logisteps is currently under construction, and as a result, user experience may change
-          drastically from visit to visit.</p>
+          drastically from visit to visit.</p> {% endcomment %}
+          {% block page %}{% endblock %}
     </div>
   </div>
 {% endblock %}
