@@ -24,7 +24,7 @@ function makeRequest (method, url) {
 
 function loadRecentData(){
     const summaryEndpoint = '/api/steps/summary/?date=';
-    const today = new Date(2018,6,19);
+    const today = new Date(2018,6,15);
 
     function formatDonutData(dataString) {
         let data = JSON.parse(dataString);
@@ -40,6 +40,10 @@ function loadRecentData(){
     function createChart(id, stepData) {
         c3.generate({
             bindto: id,
+            size: {
+                 width: 350,
+                 height: 350
+            },
             data: {
                 json: [stepData],
                 type : 'donut',
@@ -47,18 +51,18 @@ function loadRecentData(){
                     value: ['steps', 'left'],
                 },
                 colors: {
-                    steps: '#ff0000',
-                    left: '#ffffff'
+                    steps: '#49274A',
+                    left: '#D3D3D3'
                 },
-                onclick: function (d, i) { console.log("onclick", d, i); },
-                onmouseover: function (d, i) { console.log("onmouseover", d, i); },
-                onmouseout: function (d, i) { console.log("onmouseout", d, i); },
+                // onclick: function (d, i) { console.log("onclick", d, i); },
+                // onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                // onmouseout: function (d, i) { console.log("onmouseout", d, i); },
             },
             legend: {
                 hide: true
             },
             donut: {
-                title: stepData.percent.toPrecision(2) + '%',
+                title: 'Progress: ' + stepData.percent.toPrecision(2) + '%',
                 label: {
                     show: false
                 }

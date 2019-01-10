@@ -8,9 +8,11 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from django.views.generic import View
+from datetime import datetime, timedelta
 
-from .models import LogistepsUser
+from .models import LogistepsUser, Step
 from .forms import CustomUserCreationForm, UserCompletionForm
+from utils.step_utils import getInactiveTime, getLeastActiveHour, getMostActiveHour, avgStepsPerHour
 
 # Create your views here.
 def register(request):
@@ -64,5 +66,54 @@ def completeProfile(request):
 class RecentView(ProtectedView):
     template_name = 'recent.html'
 
+    def to12HourTime(self, twentyFourHourTime):
+        if twentyFourHourTime == 0:
+            return '12 AM'
+        elif twentyFourHourTime <= 12:
+            return str(twentyFourHourTime) + ' AM'
+        else:
+            return str(twentyFourHourTime - 12) + ' PM'
+
+    def summarize(self, request, date, *args, **kwargs):
+        queryset = Step.objects.all()
+
+        logistepsUser = LogistepsUser.objects.get(user_id=self.request.user.id)
+
+        if logistepsUser is not None:
+            queryset = queryset.filter(user=logistepsUser.id,
+                                       datetime__year=date.year,
+                                       datetime__month=date.month,
+                                       datetime__day=date.day)
+
+        logistepsUser = LogistepsUser.objects.get(user_id=self.request.user.id)
+
+        steps = queryset.count()
+        goal = logistepsUser.step_goal
+
+        most_active_hour = getMostActiveHour(queryset)
+        least_active_hour = getLeastActiveHour(queryset)
+        inactive_time = getInactiveTime(queryset)
+        steps_per_hour = avgStepsPerHour(queryset, date)
+
+        # do statistics here, e.g.
+        stats = {
+            'steps': steps,
+            'least_active': self.to12HourTime(least_active_hour.get('datetime__hour')),
+            'most_active': self.to12HourTime(most_active_hour.get('datetime__hour')),
+            'inactive_time': inactive_time,
+            'steps_per_hour': str(round(steps_per_hour, 2))
+        }
+
+        # not using a serializer here since it is already a 
+        # form of serialization
+        return stats
+
     def get(self, request, *args, **kwargs):
-        return render(request, 'logisteps/recent.html')
+        today = datetime(2018, 8, 17)
+        todaySum = self.summarize(request, today, *args, **kwargs)
+        yesterdaSumy = self.summarize(request, today - timedelta(days=1), *args, **kwargs)
+
+        return render(request, 'logisteps/recent.html', {'summary': {
+            'today': todaySum,
+            'yesterday': yesterdaSumy
+        }})

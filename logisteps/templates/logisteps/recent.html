@@ -1,11 +1,62 @@
 {% extends "logisteps/index.html" %}
 
 {% block page %}
-  <div class="row">
-    <div id="recent1"></div>
-    <div id="recent2"></div>
-    <script>
-        loadRecentData();
-    </script>
+    <div id="recent" style="height:100%">
+        <div style="float: left; width: 50%; height: 100%">
+            <h1>Today</h1>
+            <div id="recent1" class="center-svg"></div>
+            <div>
+                <table class="summary">
+                    <tr>
+                        <td>Total Steps</td>
+                        <td>{{ summary.today.steps }}</td> 
+                    </tr>
+                    <tr>
+                        <td>Average Steps/Hr.</td>
+                        <td>{{ summary.today.steps_per_hour }}</td> 
+                    </tr>
+                    <tr>
+                        <td>Least Active Hour</td>
+                        <td> {{summary.today.least_active}} </td> 
+                    </tr>
+                    <tr>
+                        <td>Most Active Hour</td>
+                        <td> {{summary.today.most_active}} </td> 
+                    </tr>
+                    <tr>
+                        <td>Inactive Time</td>
+                        <td>{{ summary.today.inactive_time.hours }} Hr. {{ summary.today.inactive_time.minutes }} min.</td> 
+                    </tr>
+                    </table>
+            </div>
+        </div>
+        <div style="float: right; width: 50%; height: 100%">
+            <h1>Yesterday</h1>
+            <div id="recent2" class="center-svg"></div>
+             <div>
+                <table class="summary">
+                    <tr>
+                        <td>Total Steps</td>
+                        <td>{{ summary.yesterday.steps }}</td> 
+                    </tr>
+                    <tr>
+                        <td>Average Steps/Hr.</td>
+                        <td>{{ summary.yesterday.steps_per_hour }}</td> 
+                    </tr>
+                    <tr>
+                        <td>Least Active Hour</td>
+                        <td> {{summary.yesterday.least_active}} </td> 
+                    </tr>
+                    <tr>
+                        <td>Most Active Hour</td>
+                        <td> {{summary.yesterday.most_active}} </td> 
+                    </tr>
+                    <tr>
+                        <td>Inactive Time</td>
+                        <td>{{ summary.yesterday.inactive_time.hours }} Hr. {{ summary.today.inactive_time.minutes }} min.</td> 
+                    </tr>
+                    </table>
+            </div>
+        </div>
   </div>
 {% endblock %}

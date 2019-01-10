@@ -22,14 +22,18 @@
   </head>
   <body>
     <div class="stretch-container">
-      <header>
+      <header style="height: 10vh">
           {% if user.is_authenticated %}
               {% include "logisteps/topbar.html" %}
           {% endif %}
       </header>
-      <section>
+      <section style="height: 90vh">
           {% block content %}{% endblock %}
       </section>
     </div>
   </body>
 </html>
+
+<script>
+        loadRecentData();
+</script>
