@@ -1,6 +1,7 @@
 from datetime import datetime
 from django.db.models import Count, Max, Min
 from math import floor
+from logisteps.models import Step, LogistepsUser
 
 def getOrderStepsByHour(queryset):
     return queryset.values('datetime__hour').annotate(Count('id')).order_by('id__count')
@@ -48,3 +49,64 @@ def avgStepsPerHour(queryset, date):
         steps_per_hour = steps / 24
     
     return steps_per_hour
+
+def getStepsOnDate(user, date):
+    """
+    Returns set of steps taken by a user on a particular date. If date is blank,
+    steps for the current date are returned.
+    """
+    queryset = Step.objects.all()
+
+    if date is None:
+        query_date = datetime.today()
+    elif isinstance(date, str):
+        query_date = datetime.strptime(date, '%m-%d-%Y')
+    else:
+        query_date = date
+
+    logistepsUser = LogistepsUser.objects.get(user_id=user.id)
+
+    if logistepsUser is not None:
+        queryset = queryset.filter(user=logistepsUser.id,
+                                    datetime__year=query_date.year,
+                                    datetime__month=query_date.month,
+                                    datetime__day=query_date.day)
+    return queryset
+
+def getDateSummary(user, date):
+    """
+    Returns a dictionary object summarzing a User's step statistics for a 
+    given day
+    """
+    queryset = getStepsOnDate(user, date)
+    logistepsUser = LogistepsUser.objects.get(user_id=user.id)
+
+    steps = queryset.count()
+    goal = logistepsUser.step_goal
+    percent_complete = float(steps)/goal * 100
+
+    most_active_hour = getMostActiveHour(queryset)
+    least_active_hour = getLeastActiveHour(queryset)
+    inactive_time = getInactiveTime(queryset)
+    steps_per_hour = avgStepsPerHour(queryset, date)
+
+    # do statistics here, e.g.
+    stats = {
+        'steps': steps,
+        'goal': goal,
+        'percent': percent_complete,
+        'least_active': {
+            'hour': least_active_hour.get('datetime__hour'),
+            'steps': least_active_hour.get('id__count')
+        },
+        'most_active': {
+            'hour': most_active_hour.get('datetime__hour'),
+            'steps': most_active_hour.get('id__count')
+        },
+        'inactive_time': inactive_time,
+        'steps_per_hour': steps_per_hour
+    }
+
+    # not using a serializer here since it is already a 
+    # form of serialization
+    return stats

@@ -11,7 +11,7 @@ from rest_framework import permissions
 from logisteps_api.permissions import IsOwnerOrReadOnly, IsOwner, UserDetailPermissions
 from django.db.models import Q
 from datetime import datetime
-from utils.step_utils import getMostActiveHour, getLeastActiveHour, getInactiveTime, avgStepsPerHour
+from utils.step_utils import getMostActiveHour, getLeastActiveHour, getInactiveTime, avgStepsPerHour, getStepsOnDate, getDateSummary
 
 class UserList(generics.ListAPIView):
     queryset = LogistepsUser.objects.all()
@@ -121,68 +121,14 @@ class StepsListByDay(mixins.ListModelMixin,
     serializer_class = StepSerializer
 
     def get_queryset(self):
+        return getStepsOnDate(self.request.user, self.request.query_params.get('date', None))
         
-        """
-        Optionally restricts the returned purchases to a given user,
-        by filtering against a `username` query parameter in the URL.
-        """
-        queryset = Step.objects.all()
-        query_date = self.request.query_params.get('date', None) #TODO Perform date validation
-
-        if query_date is None:
-            query_date = datetime.today()
-        else:
-            query_date = datetime.strptime(query_date, '%m-%d-%Y')
-
-        logistepsUser = LogistepsUser.objects.get(user_id=self.request.user.id)
-
-        if logistepsUser is not None:
-            queryset = queryset.filter(user=logistepsUser.id,
-                                       datetime__year=query_date.year,
-                                       datetime__month=query_date.month,
-                                       datetime__day=query_date.day)
-        return queryset
-
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
 class StepSummary(StepsListByDay):
-    def summarize(self, request, *args, **kwargs):
-        """This can be moved to a Mixin class."""
-        # make sure the filters of the parent class get applied
-        queryset = self.filter_queryset(self.get_queryset())
-        logistepsUser = LogistepsUser.objects.get(user_id=self.request.user.id)
-
-        steps = queryset.count()
-        goal = logistepsUser.step_goal
-        percent_complete = float(steps)/goal * 100
-
-        most_active_hour = getMostActiveHour(queryset)
-        least_active_hour = getLeastActiveHour(queryset)
-        inactive_time = getInactiveTime(queryset)
-        steps_per_hour = avgStepsPerHour(queryset, self.request.query_params.get('date', datetime.now().date()))
-
-        # do statistics here, e.g.
-        stats = {
-            'steps': steps,
-            'goal': goal,
-            'percent': percent_complete,
-            'least_active': {
-                'hour': least_active_hour.get('datetime__hour'),
-                'steps': least_active_hour.get('id__count')
-            },
-            'most_active': {
-                'hour': most_active_hour.get('datetime__hour'),
-                'steps': most_active_hour.get('id__count')
-            },
-            'inactive_time': inactive_time,
-            'steps_per_hour': steps_per_hour
-        }
-
-        # not using a serializer here since it is already a 
-        # form of serialization
-        return Response(stats)
 
     def get(self, request, *args, **kwargs):
-        return self.summarize(request, *args, **kwargs)
+        stats = getDateSummary(request.user, request.query_params.get('date', datetime.now().date()))
+        return Response(stats)
 
