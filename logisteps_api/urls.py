@@ -18,7 +18,8 @@ urlpatterns = [
     path('user/<str:user__username>/', views.LogistepsUserDetail.as_view()),
     path('steps/', views.StepList.as_view()),
     path('steps/steplist/', views.StepsListByDay.as_view()),
-    path('steps/summary/', views.StepSummary.as_view(), name='summary')
+    path('steps/summary/', views.StepSummary.as_view(), name='summary'),
+    path('steps/count/', views.StepCount.as_view(), name='step_count')
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

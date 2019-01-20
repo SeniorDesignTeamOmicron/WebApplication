@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from django.db.models import Count, Max, Min
 from math import floor
 from logisteps.models import Step, LogistepsUser
@@ -110,3 +110,35 @@ def getDateSummary(user, date):
     # not using a serializer here since it is already a 
     # form of serialization
     return stats
+
+def getStepCount(user, date):
+    """
+    Returns the number of steps taken in a given day.
+    """
+    logistepsUser = LogistepsUser.objects.get(user_id=user.id)
+    return getStepsOnDate(user, date).count()
+
+def getStepCounts(user, start, end):
+    """
+    Returns a dictionary object containing step counts for every
+    day in the date range.
+    """
+
+    step_counts = {
+        'range': {
+            'start': start.strftime("%m-%d-%Y"),
+            'end': end.strftime("%m-%d-%Y")
+        }
+    }
+
+    counts = {}
+    day = timedelta(days=1)
+    dateIndex = start
+
+    while dateIndex <= end:
+        counts[dateIndex.strftime("%m-%d-%Y")] = getStepCount(user, dateIndex)
+        dateIndex += day
+    
+    step_counts['count'] = counts
+
+    return step_counts

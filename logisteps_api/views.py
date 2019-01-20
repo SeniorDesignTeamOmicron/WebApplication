@@ -11,7 +11,9 @@ from rest_framework import permissions
 from logisteps_api.permissions import IsOwnerOrReadOnly, IsOwner, UserDetailPermissions
 from django.db.models import Q
 from datetime import datetime
-from utils.step_utils import getMostActiveHour, getLeastActiveHour, getInactiveTime, avgStepsPerHour, getStepsOnDate, getDateSummary
+from utils.step_utils import getMostActiveHour, getLeastActiveHour, getInactiveTime, \
+                             avgStepsPerHour, getStepsOnDate, getDateSummary, \
+                             getStepCounts
 
 class UserList(generics.ListAPIView):
     queryset = LogistepsUser.objects.all()
@@ -132,3 +134,35 @@ class StepSummary(StepsListByDay):
         stats = getDateSummary(request.user, request.query_params.get('date', datetime.now().date()))
         return Response(stats)
 
+class StepCount(generics.GenericAPIView):
+
+    def get(self, request, *args, **kwards):
+        start_date = request.query_params.get('start', None)
+        end_date = request.query_params.get('end', None)
+        today = datetime.today()
+
+        if start_date is None and end_date is None:
+            #Only return step count for today
+            step_counts = getStepCounts(self.request.user, today, today)
+            response = Response(step_counts, status=status.HTTP_201_CREATED)
+        elif start_date is not None and end_date is not None:
+            #client provided custom date range
+            try:
+                start_date = datetime.strptime(start_date, '%m-%d-%Y')
+                end_date = datetime.strptime(end_date, '%m-%d-%Y')
+
+                if start_date > end_date:
+                    response = Response({'message': 'start date must come before end date'}, status=status.HTTP_400_BAD_REQUEST)
+                elif start_date > today or end_date > today:
+                    response = Response({'message': 'start and end date must not be in the future'}, status=status.HTTP_400_BAD_REQUEST)
+                elif (end_date - start_date).days > 365:
+                    response = Response({'message': 'date range must be less than a year'}, status=status.HTTP_400_BAD_REQUEST)
+                else:
+                    step_counts = getStepCounts(self.request.user, start_date, end_date)
+                    response = Response(step_counts, status=status.HTTP_201_CREATED)
+            except:
+                response = Response({'message': 'Invalid date format'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            response = Response({'message': 'Provide both date paremters or omit both'}, status=status.HTTP_400_BAD_REQUEST)
+
+        return response
