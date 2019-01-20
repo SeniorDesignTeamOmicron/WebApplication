@@ -23,12 +23,10 @@ def register(request):
             user = f.save()
 
             login(request, user)
-            print('Form is valid')
             return redirect('/logisteps/profile/complete/')
 
     else:
         f = CustomUserCreationForm()
-        print("Form not valid")
 
     return render(request, 'logisteps/register.html', {'form': f})
 
