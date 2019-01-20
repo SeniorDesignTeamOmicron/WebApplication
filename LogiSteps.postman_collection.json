@@ -156,7 +156,7 @@
 								},
 								{
 									"key": "username",
-									"value": "",
+									"value": "larsonma",
 									"type": "string"
 								}
 							]
@@ -175,7 +175,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/users/",
+							"raw": "http://127.0.0.1:8000/api/test8/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -186,7 +186,7 @@
 							"port": "8000",
 							"path": [
 								"api",
-								"users",
+								"test8",
 								""
 							]
 						}
@@ -238,13 +238,13 @@
 							"type": "basic",
 							"basic": [
 								{
-									"key": "username",
+									"key": "password",
 									"value": "",
 									"type": "string"
 								},
 								{
-									"key": "password",
-									"value": "",
+									"key": "username",
+									"value": "test8",
 									"type": "string"
 								}
 							]
@@ -256,7 +256,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/user/test6/",
+							"raw": "http://127.0.0.1:8000/api/user/test8/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -268,7 +268,7 @@
 							"path": [
 								"api",
 								"user",
-								"test6",
+								"test8",
 								""
 							]
 						}
@@ -282,13 +282,13 @@
 							"type": "basic",
 							"basic": [
 								{
-									"key": "username",
-									"value": "test7",
+									"key": "password",
+									"value": "",
 									"type": "string"
 								},
 								{
-									"key": "password",
-									"value": "test",
+									"key": "username",
+									"value": "test8",
 									"type": "string"
 								}
 							]
@@ -304,10 +304,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"user\": {\n\t\t\"username\": \"test7\",\n\t\t\"email\": \"larsonm22@aol.com\",\n\t\t\"first_name\": \"Mitchell\",\n\t\t\"last_name\": \"Larson\",\n\t\t\"password\": \"test\"\n\t},\n\t\"right_shoe\": {\n\t\t\"foot\": \"R\",\n\t\t\"size\": 9.5\n\t},\n\t\"left_shoe\":{\n\t\t\"foot\": \"L\",\n\t\t\"size\": 9.5\n\t},\n\t\"height\": 67,\n\t\"weight\": 185,\n\t\"step_goal\": 15000\n}"
+							"raw": "{\n\t\"user\": {\n\t\t\"username\": \"test8\",\n\t\t\"email\": \"test@aol.com\",\n\t\t\"first_name\": \"Mitchell\",\n\t\t\"last_name\": \"Larson\",\n\t\t\"password\": \"test\"\n\t},\n\t\"right_shoe\": {\n\t\t\"foot\": \"R\",\n\t\t\"size\": 8.5\n\t},\n\t\"left_shoe\":{\n\t\t\"foot\": \"L\",\n\t\t\"size\": 8.5\n\t},\n\t\"height\": 67,\n\t\"weight\": 165,\n\t\"step_goal\": 50\n}"
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/user/test7/",
+							"raw": "http://127.0.0.1:8000/api/user/test8/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -319,7 +319,7 @@
 							"path": [
 								"api",
 								"user",
-								"test7",
+								"test8",
 								""
 							]
 						}
@@ -339,7 +339,7 @@
 								},
 								{
 									"key": "username",
-									"value": "",
+									"value": "test8",
 									"type": "string"
 								}
 							]
@@ -351,7 +351,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/user/test6/",
+							"raw": "http://127.0.0.1:8000/api/user/test8/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -363,7 +363,7 @@
 							"path": [
 								"api",
 								"user",
-								"test6",
+								"test8",
 								""
 							]
 						}
@@ -397,12 +397,12 @@
 							"basic": [
 								{
 									"key": "password",
-									"value": "test",
+									"value": "",
 									"type": "string"
 								},
 								{
 									"key": "username",
-									"value": "larsonma",
+									"value": "test8",
 									"type": "string"
 								}
 							]
@@ -418,7 +418,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "[{\r\n    \"datetime\": \"2018-07-02T01:39:47+05:00\",\r\n    \"sensor_reading\": {\r\n      \"location\": \"B\",\r\n      \"pressure\": 17.0183,\r\n      \"shoe\": \"left\"\r\n    },\r\n    \"location\": {\r\n      \"longitude\": -9.040912\r\n    }\r\n  }]"
+							"raw": "[{\r\n    \"datetime\": \"2018-07-03T01:39:47+05:00\",\r\n    \"sensor_reading\": {\r\n      \"location\": \"B\",\r\n      \"pressure\": 17.0183,\r\n      \"shoe\": \"left\"\r\n    },\r\n    \"location\": {\r\n      \"latitude\": 178.92323,\r\n      \"longitude\": -9.040912\r\n    }\r\n  }]"
 						},
 						"url": {
 							"raw": "http://127.0.0.1:8000/api/steps/",
@@ -447,7 +447,7 @@
 							"basic": [
 								{
 									"key": "password",
-									"value": "test",
+									"value": "",
 									"type": "string"
 								},
 								{
@@ -497,7 +497,7 @@
 							"basic": [
 								{
 									"key": "password",
-									"value": "test",
+									"value": "",
 									"type": "string"
 								},
 								{
@@ -533,6 +533,56 @@
 								{
 									"key": "date",
 									"value": "8-27-2018"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Step Counts",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "larsonma",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/steps/count/?start=8-27-2018;end=8-30-2018",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"steps",
+								"count",
+								""
+							],
+							"query": [
+								{
+									"key": "start",
+									"value": "8-27-2018;end=8-30-2018"
 								}
 							]
 						}
