@@ -1,6 +1,6 @@
 from datetime import datetime, date, timedelta
 from django.db.models import Count, Max, Min
-from django.db.models.functions import ExtractWeekDay
+from django.db.models.functions import ExtractWeekDay, ExtractMonth
 from math import floor
 from logisteps.models import Step, LogistepsUser
 
@@ -154,25 +154,50 @@ def getStepBreakdown(user, groupyby):
 
     inactive_minutes = steps.values('datetime','datetime__year','datetime__month', 'datetime__day', 'datetime__hour', 'datetime__minute') \
         .annotate(Count('datetime__year'),Count('datetime__month'), Count('datetime__day'), Count('datetime__hour'), Count('datetime__minute'))
-    inactive_minutes = inactive_minutes.annotate(weekday=ExtractWeekDay('datetime')) \
-        .values('weekday') 
+    
+    if groupyby == 'weekly':
+        MINUTES_IN_WEEKDAY = MINUTES_IN_YEAR / 7
+        inactive_minutes = inactive_minutes.annotate(weekday=ExtractWeekDay('datetime')) \
+            .values('weekday') 
 
-    lst = [0] * 7
-    for minute in inactive_minutes:
-        lst[minute.get('weekday')-1] += 1
+        lst = [0] * 7
+        for minute in inactive_minutes:
+            lst[minute.get('weekday')-1] += 1
 
-    steps = steps.annotate(weekday=ExtractWeekDay('datetime')) \
-        .values('weekday') \
-        .annotate(count=Count('id')) \
-        .values('weekday', 'count')
+        steps = steps.annotate(weekday=ExtractWeekDay('datetime')) \
+            .values('weekday') \
+            .annotate(count=Count('id')) \
+            .values('weekday', 'count')
 
-    for obj in steps:
-        weekday = obj.get('weekday')
+        for obj in steps:
+            weekday = obj.get('weekday')
 
-        inactive_min = lst[weekday - 1]
-        active_min = MINUTES_IN_YEAR - inactive_min
+            inactive_min = lst[weekday - 1]
+            active_min = MINUTES_IN_WEEKDAY - inactive_min
 
-        obj['inactive_minutes'] = inactive_min
-        obj['active_minutes'] = active_min
+            obj['inactive_minutes'] = inactive_min
+            obj['active_minutes'] = active_min
+    elif groupyby == 'monthly':
+        MINUTES_IN_MONTH = MINUTES_IN_YEAR / 12
+        inactive_minutes = inactive_minutes.annotate(month=ExtractMonth('datetime')) \
+            .values('month')
+        
+        lst = [0] * 12
+        for minute in inactive_minutes:
+            lst[minute.get('month')-1] += 1
+        
+        steps = steps.annotate(month=ExtractMonth('datetime')) \
+            .values('month') \
+            .annotate(count=Count('id')) \
+            .values('month', 'count')
+        
+        for obj in steps:
+            month = obj.get('month')
+
+            inactive_min = lst[month - 1]
+            active_min = MINUTES_IN_MONTH - inactive_min
+
+            obj['inactive_minutes'] = inactive_min
+            obj['active_minutes'] = active_min
     
     return steps
