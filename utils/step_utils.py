@@ -1,8 +1,8 @@
 from datetime import datetime, date, timedelta
-from django.db.models import Count, Max, Min
+from django.db.models import Count, Max, Min, Avg
 from django.db.models.functions import ExtractWeekDay, ExtractMonth
 from math import floor
-from logisteps.models import Step, LogistepsUser
+from logisteps.models import Step, LogistepsUser, SensorReading
 
 def getOrderStepsByHour(queryset):
     return queryset.values('datetime__hour').annotate(Count('id')).order_by('id__count')
@@ -201,3 +201,34 @@ def getStepBreakdown(user, groupyby):
             obj['active_minutes'] = active_min
     
     return steps
+
+def getAvgPressureBySensor(steps, shoe, date_range):
+    steps = steps.filter(datetime__range=date_range)    
+    return SensorReading.objects.filter(id__in=steps.values_list('sensor_reading_id', flat=True), shoe_id=shoe) \
+        .values('location') \
+        .annotate(avg_pressure=Avg('pressure'))
+
+def getPressureSnapshot(user, date):
+    logisetpsUser = LogistepsUser.objects.get(user_id=user.id)
+    left_shoe = logisetpsUser.left_shoe_id
+    right_shoe = logisetpsUser.right_shoe_id
+
+    steps = Step.objects.all().filter(user_id=logisetpsUser.id, datetime__range=[date - timedelta(days=30), date])
+
+    return {
+        'query_date': date.strftime("%m-%d-%Y"),
+        'pressure': {
+            'past_day': {
+                'left_shoe': getAvgPressureBySensor(steps, left_shoe, [date - timedelta(days=1), date]),
+                'right_shoe': getAvgPressureBySensor(steps, right_shoe, [date - timedelta(days=1), date])
+            },
+            'past_week': {
+                'left_shoe': getAvgPressureBySensor(steps, left_shoe, [date - timedelta(days=7), date]),
+                'right_shoe': getAvgPressureBySensor(steps, right_shoe, [date - timedelta(days=7), date])
+            },
+            'past_month': {
+                'left_shoe': getAvgPressureBySensor(steps, left_shoe, [date - timedelta(days=30), date]),
+                'right_shoe': getAvgPressureBySensor(steps, right_shoe, [date - timedelta(days=30), date])
+            }
+        }
+    }

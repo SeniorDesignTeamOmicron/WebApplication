@@ -13,7 +13,7 @@ from django.db.models import Q
 from datetime import datetime
 from utils.step_utils import getMostActiveHour, getLeastActiveHour, getInactiveTime, \
                              avgStepsPerHour, getStepsOnDate, getDateSummary, \
-                             getStepCounts, getStepBreakdown
+                             getStepCounts, getStepBreakdown, getPressureSnapshot
 
 class UserList(generics.ListAPIView):
     queryset = LogistepsUser.objects.all()
@@ -184,3 +184,27 @@ class StepsBreakdown(generics.GenericAPIView):
             response = Response({'message': 'valid groupby parameters are weekly or monthly'}, status=status.HTTP_400_BAD_REQUEST)
 
         return response
+
+class PressureSnapshot(generics.GenericAPIView):
+    """
+        This endpoint should return an average pressure a user has placed on their shoes for 
+        the past day, the past month, and the past year. This endpoint expects a GET parameter
+        for the date, and defaults to the current date if none are provided.
+    """
+
+    def get(self, request, *args, **kwargs):
+        query_date = request.query_params.get('date', None)
+
+        if query_date is not None and query_date > datetime.today():
+            response = Response({'message': 'date must not be in the future'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            try:
+                query_date = datetime.today() if query_date is None else datetime.strptime(query_date, '%m-%d-%Y')
+
+                pressure_snap = getPressureSnapshot(self.request.user, query_date)
+                response = Response(pressure_snap, status=status.HTTP_200_OK)
+            except:
+                response = Response({'message': 'Invalid date format'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        return response
+

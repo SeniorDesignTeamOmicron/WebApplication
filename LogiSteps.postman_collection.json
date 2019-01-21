@@ -588,6 +588,118 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Yearly Breakdown",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b4f5ae0c-444c-4c8f-93e4-af6031fc2a82",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "larsonma",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/steps/breakdown/?groupby=weekly",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"steps",
+								"breakdown",
+								""
+							],
+							"query": [
+								{
+									"key": "groupby",
+									"value": "weekly"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pressure Breakdown",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "larsonma",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/steps/pressure/?date=8-27-2018",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"steps",
+								"pressure",
+								""
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "8-27-2018"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
