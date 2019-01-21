@@ -1,5 +1,6 @@
 from datetime import datetime, date, timedelta
 from django.db.models import Count, Max, Min
+from django.db.models.functions import ExtractWeekDay
 from math import floor
 from logisteps.models import Step, LogistepsUser
 
@@ -142,3 +143,36 @@ def getStepCounts(user, start, end):
     step_counts['count'] = counts
 
     return step_counts
+
+def getStepBreakdown(user, groupyby):
+    MINUTES_IN_YEAR = 60 * 24 * 365
+    logistepsUser = LogistepsUser.objects.get(user_id=user.id)
+    end_date = datetime.today()
+    start_date = end_date - timedelta(days=365)
+
+    steps = Step.objects.all().filter(user=logistepsUser.id, datetime__range=[start_date, end_date])
+
+    inactive_minutes = steps.values('datetime','datetime__year','datetime__month', 'datetime__day', 'datetime__hour', 'datetime__minute') \
+        .annotate(Count('datetime__year'),Count('datetime__month'), Count('datetime__day'), Count('datetime__hour'), Count('datetime__minute'))
+    inactive_minutes = inactive_minutes.annotate(weekday=ExtractWeekDay('datetime')) \
+        .values('weekday') 
+
+    lst = [0] * 7
+    for minute in inactive_minutes:
+        lst[minute.get('weekday')-1] += 1
+
+    steps = steps.annotate(weekday=ExtractWeekDay('datetime')) \
+        .values('weekday') \
+        .annotate(count=Count('id')) \
+        .values('weekday', 'count')
+
+    for obj in steps:
+        weekday = obj.get('weekday')
+
+        inactive_min = lst[weekday - 1]
+        active_min = MINUTES_IN_YEAR - inactive_min
+
+        obj['inactive_minutes'] = inactive_min
+        obj['active_minutes'] = active_min
+    
+    return steps

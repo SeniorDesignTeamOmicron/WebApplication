@@ -13,7 +13,7 @@ from django.db.models import Q
 from datetime import datetime
 from utils.step_utils import getMostActiveHour, getLeastActiveHour, getInactiveTime, \
                              avgStepsPerHour, getStepsOnDate, getDateSummary, \
-                             getStepCounts
+                             getStepCounts, getStepBreakdown
 
 class UserList(generics.ListAPIView):
     queryset = LogistepsUser.objects.all()
@@ -144,7 +144,7 @@ class StepCount(generics.GenericAPIView):
         if start_date is None and end_date is None:
             #Only return step count for today
             step_counts = getStepCounts(self.request.user, today, today)
-            response = Response(step_counts, status=status.HTTP_201_CREATED)
+            response = Response(step_counts, status=status.HTTP_200_OK)
         elif start_date is not None and end_date is not None:
             #client provided custom date range
             try:
@@ -159,10 +159,28 @@ class StepCount(generics.GenericAPIView):
                     response = Response({'message': 'date range must be less than a year'}, status=status.HTTP_400_BAD_REQUEST)
                 else:
                     step_counts = getStepCounts(self.request.user, start_date, end_date)
-                    response = Response(step_counts, status=status.HTTP_201_CREATED)
+                    response = Response(step_counts, status=status.HTTP_200_OK)
             except:
                 response = Response({'message': 'Invalid date format'}, status=status.HTTP_400_BAD_REQUEST)
         else:
             response = Response({'message': 'Provide both date paremters or omit both'}, status=status.HTTP_400_BAD_REQUEST)
+
+        return response
+
+class StepsBreakdown(generics.GenericAPIView):
+    """
+        Endpoint should return an object breaking down steps, active time, and inactive time
+        for the entire year, grouped according to the GET parameter. If no parameter is passed,
+        the groupby term is defaulted to "weekly". Valid parameters are weekly and monthly
+    """
+
+    def get(self, request, *args, **kwards):
+        groupby = request.query_params.get('groupby', 'weekly')
+
+        if (groupby == 'weekly' or groupby == 'monthly') and len(request.query_params) == 1:
+            step_breakdown = getStepBreakdown(self.request.user, groupby)
+            response = Response(step_breakdown, status=status.HTTP_200_OK)
+        else:
+            response = Response({'message': 'valid groupby parameters are weekly or monthly'}, status=status.HTTP_400_BAD_REQUEST)
 
         return response
