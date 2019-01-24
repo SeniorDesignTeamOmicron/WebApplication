@@ -5,11 +5,10 @@ from rest_framework.fields import CurrentUserDefault
 from mysite import settings
 
 class LocationSerializer(serializers.ModelSerializer):
-    owner = serializers.ReadOnlyField(source='owner.username')
 
     class Meta:
         model = Location
-        fields = ('latitude', 'longitude', 'owner')
+        fields = ('id', 'latitude', 'longitude')
 
 class ShoeSerializer(serializers.ModelSerializer):
 

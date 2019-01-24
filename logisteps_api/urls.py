@@ -21,7 +21,8 @@ urlpatterns = [
     path('steps/summary/', views.StepSummary.as_view(), name='summary'),
     path('steps/count/', views.StepCount.as_view(), name='step_count'),
     path('steps/breakdown/', views.StepsBreakdown.as_view(), name='breakdown'),
-    path('steps/pressure/', views.PressureSnapshot.as_view(), name='pressure')
+    path('steps/pressure/', views.PressureSnapshot.as_view(), name='pressure'),
+    path('steps/location/', views.LocationList.as_view(), name='location')
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

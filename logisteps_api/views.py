@@ -81,21 +81,21 @@ class StepList(mixins.CreateModelMixin,
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class LocationList(mixins.ListModelMixin,
-                   mixins.CreateModelMixin,
-                   generics.GenericAPIView):
-    queryset = Location.objects.all()
-    serializer_class = LocationSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,) #Authenticated users: read-write; others: read-only
+# class LocationList(mixins.ListModelMixin,
+#                    mixins.CreateModelMixin,
+#                    generics.GenericAPIView):
+#     queryset = Location.objects.all()
+#     serializer_class = LocationSerializer
+#     permission_classes = (permissions.IsAuthenticatedOrReadOnly,) #Authenticated users: read-write; others: read-only
 
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+#     def perform_create(self, serializer):
+#         serializer.save(owner=self.request.user)
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+#     def get(self, request, *args, **kwargs):
+#         return self.list(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+#     def post(self, request, *args, **kwargs):
+#         return self.create(request, *args, **kwargs)
 
 class LocationDetail(mixins.RetrieveModelMixin,
                      mixins.UpdateModelMixin,
@@ -195,7 +195,7 @@ class PressureSnapshot(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
         query_date = request.query_params.get('date', None)
 
-        if query_date is not None and query_date > datetime.today():
+        if query_date is not None and datetime.strptime(query_date, "%m-%d-%Y") > datetime.today():
             response = Response({'message': 'date must not be in the future'}, status=status.HTTP_400_BAD_REQUEST)
         else:
             try:
@@ -208,3 +208,26 @@ class PressureSnapshot(generics.GenericAPIView):
         
         return response
 
+class LocationList(mixins.ListModelMixin,
+                   generics.GenericAPIView):
+    # queryset = Location.objects.all()
+    serializer_class = LocationSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,) #Authenticated users: read-write; others: read-only
+
+    def get_queryset(self):
+        steps = getStepsOnDate(self.request.user, self.request.query_params.get('date', datetime.today().strftime("%m-%d-%Y")))
+        return Location.objects.all().filter(id__in=steps.values_list('location_id', flat=True))
+
+    def get(self, request, *args, **kwargs):
+        query_date = self.request.query_params.get('date', None)
+
+        if query_date is not None and datetime.strptime(query_date, "%m-%d-%Y") > datetime.today():
+            response = Response({'message': 'date must not be in the future'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            data = {
+                'query_date': query_date,
+                'locations': self.serializer_class(self.get_queryset(*args, **kwargs), many=True).data
+            }
+            response = Response(data, status=status.HTTP_200_OK)
+
+        return response 
