@@ -95,3 +95,9 @@ class RecentView(ProtectedView):
         data = self.summarize(request)
 
         return render(request, 'logisteps/recent.html', {'summary': data})
+
+class StepsOverTime(ProtectedView):
+    template_name = 'steps_over_time.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, 'logisteps/steps_over_time.html')

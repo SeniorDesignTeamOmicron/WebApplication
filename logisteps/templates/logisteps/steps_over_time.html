@@ -1,0 +1,28 @@
+{% extends "logisteps/index.html" %}
+
+{% block page %}
+<div style="height:100%">
+    <div>
+        <h1 style="text-align:center">Step Count Over the Past Week</h1>
+    </div>
+    <div>
+        <div id="linechart-week"></div>
+    </div>
+    <div>
+        <div class="datefilter">
+            <button class="btn" id="decrement_day" type="reset" onclick="decrementDay()">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div>
+                <p id="week_filter_text"></p>
+            </div>
+            <button class="btn" id="increment_day" type="reset" onclick="incrementDay()">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+    loadPastWeek()
+</script>
+{% endblock %}

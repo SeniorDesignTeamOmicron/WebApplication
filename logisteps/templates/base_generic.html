@@ -14,11 +14,12 @@
     <link rel="stylesheet/less" type="text/css" href="{% static 'logisteps/less/styles.less' %}" />
     <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.8.1/less.min.js" ></script>
     <link href="{% static 'logisteps/css/c3.css' rel='stylesheet' %}">
-
+    
     <!-- Load d3.js and c3.js -->
     <script src="{% static 'logisteps/js/d3.min.js' charset='utf-8' %}"></script>
     <script src="{% static 'logisteps/js/c3.min.js' %}"></script>
     <script src="{% static 'logisteps/js/donut_chart.js' %}"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
   </head>
   <body>
     <div class="stretch-container">
@@ -32,8 +33,5 @@
       </section>
     </div>
   </body>
+  <script src="{% static 'logisteps/js/stepsTimeline.js' %}"></script>
 </html>
-
-<script>
-        loadRecentData();
-</script>
