@@ -152,16 +152,16 @@ def getStepBreakdown(user, groupyby):
 
     steps = Step.objects.all().filter(user=logistepsUser.id, datetime__range=[start_date, end_date])
 
-    inactive_minutes = steps.values('datetime','datetime__year','datetime__month', 'datetime__day', 'datetime__hour', 'datetime__minute') \
+    active_minutes = steps.values('datetime','datetime__year','datetime__month', 'datetime__day', 'datetime__hour', 'datetime__minute') \
         .annotate(Count('datetime__year'),Count('datetime__month'), Count('datetime__day'), Count('datetime__hour'), Count('datetime__minute'))
     
     if groupyby == 'weekly':
         MINUTES_IN_WEEKDAY = MINUTES_IN_YEAR / 7
-        inactive_minutes = inactive_minutes.annotate(weekday=ExtractWeekDay('datetime')) \
+        active_minutes = active_minutes.annotate(weekday=ExtractWeekDay('datetime')) \
             .values('weekday') 
 
         lst = [0] * 7
-        for minute in inactive_minutes:
+        for minute in active_minutes:
             lst[minute.get('weekday')-1] += 1
 
         steps = steps.annotate(weekday=ExtractWeekDay('datetime')) \
@@ -172,18 +172,18 @@ def getStepBreakdown(user, groupyby):
         for obj in steps:
             weekday = obj.get('weekday')
 
-            inactive_min = lst[weekday - 1]
-            active_min = MINUTES_IN_WEEKDAY - inactive_min
+            active_min = lst[weekday - 1]
+            inactive_min = MINUTES_IN_WEEKDAY - active_min
 
             obj['inactive_minutes'] = inactive_min
             obj['active_minutes'] = active_min
     elif groupyby == 'monthly':
         MINUTES_IN_MONTH = MINUTES_IN_YEAR / 12
-        inactive_minutes = inactive_minutes.annotate(month=ExtractMonth('datetime')) \
+        active_minutes = active_minutes.annotate(month=ExtractMonth('datetime')) \
             .values('month')
         
         lst = [0] * 12
-        for minute in inactive_minutes:
+        for minute in active_minutes:
             lst[minute.get('month')-1] += 1
         
         steps = steps.annotate(month=ExtractMonth('datetime')) \
@@ -194,8 +194,8 @@ def getStepBreakdown(user, groupyby):
         for obj in steps:
             month = obj.get('month')
 
-            inactive_min = lst[month - 1]
-            active_min = MINUTES_IN_MONTH - inactive_min
+            active_min = lst[month - 1]
+            inactive_min = MINUTES_IN_MONTH - active_min
 
             obj['inactive_minutes'] = inactive_min
             obj['active_minutes'] = active_min

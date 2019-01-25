@@ -1,0 +1,30 @@
+{% extends "logisteps/index.html" %}
+
+{% block page %}
+<div style="height:100%">
+    <div>
+        <h1 style="text-align:center">Weekday Breakdown</h1>
+    </div>
+    <div>
+        <div id="weekday_breakdown"></div>
+    </div>
+    <div>
+        <!-- <div class="datefilter">
+            <button class="btn" id="decrement_day" type="reset" onclick="decrementDay()">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div>
+                <p id=""></p>
+            </div>
+            <button class="btn" id="increment_day" type="reset" onclick="incrementDay()">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div> -->
+        <p>
+            Displayed below is a graphic showing a ratio of active time vs. inactive time, plus step count
+            for the past year, broken down by weekday. This may help identify activity tendencies for a user,
+            enabling them to determine which day of the week they may need to increase activity.
+        </p>
+    </div>
+</div>
+{% endblock %}

@@ -101,3 +101,9 @@ class StepsOverTime(ProtectedView):
 
     def get(self, request, *args, **kwargs):
         return render(request, 'logisteps/steps_over_time.html')
+
+class StepsByDay(ProtectedView):
+    template_name = 'steps_by_weekday.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, 'logisteps/steps_by_weekday.html')
