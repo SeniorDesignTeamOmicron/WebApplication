@@ -67,7 +67,8 @@ var weekActivity = (function () {
                   'Active Time':'#b94305',
                   'Goal Progress':'#4A2B4B',
                   },
-                  type: 'gauge'
+                  type: 'gauge',
+                  labels: false
                 },
                 size: {
                   height: 200,
@@ -75,7 +76,17 @@ var weekActivity = (function () {
                 },
                 padding: {
                     bottom: 10
-                }
+                },
+                    tooltip: {
+                        format: {
+                            value: function (value) {
+                                var p = Math.max(0, d3.precisionFixed(0.05)),
+                                f = d3.format("." + p + "%");
+                                return f(value/100);
+                            }
+                        }
+                    }
+                
               });
         }
 
