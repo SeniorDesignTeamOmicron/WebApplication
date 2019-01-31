@@ -3,72 +3,77 @@
 {% block page %}
 <div style="height:100%">
     <div>
-        <h1 style="text-align:center">Weekly Activity</h1>
+        <h1 style="text-align:center; padding: 30px">Weekly Activity</h1>
     </div>
-    <div class="calander_week">
+    <div class="calander_week" style="display:table; margin:auto">
         <div class="month_header">
-            <span><h2 id="start_date"></h2> - <h2 id="end_date"></h2></span>
+            <h2 style="display:inline-block"><span id="start_date"></span> - <span id="end_date"></span></h2>
+            <div type="text" id="datepicker" style="float:right"></div>
+            <div style="display:inline-block; padding: 10px"><button id="datepicker-button" style="background-color:transparent; border:none"><i class="fa fa-calendar fa-2x" aria-hidden="true"></i></button></div>
         </div>
         <div>
+            <div id="activity_loader">
+                <div class="loader"></div>
+            </div>
             <table class="week">
                 <tr class="week_header">
                     <th class="sunday">
-                        <h3 class="month"></h3>
+                        <!-- <h4 class="month"></h4> -->
                         <h2 class="date"></h2>
-                        <h3 class=weekday>Sunday</h3>
+                        <h4 class=weekday>Sunday</h4>
                     </th>
                     <th class="monday">
-                        <h3 class="month"></h3>
+                        <!-- <h4 class="month"></h4> -->
                         <h2 class="date"></h2>
-                        <h3 class=weekday>Monday</h3>
+                        <h4 class=weekday>Monday</h4>
                     </th>
                     <th class="tuesday">
-                        <h3 class="month"></h3>
+                        <!-- <h4 class="month"></h4> -->
                         <h2 class="date"></h2>
-                        <h3 class=weekday>Tuesday</h3>
+                        <h4 class=weekday>Tuesday</h4>
                     </th>
                     <th class="wednesday">
-                        <h3 class="month"></h3>
+                        <!-- <h4 class="month"></h4> -->
                         <h2 class="date"></h2>
-                        <h3 class=weekday>Wednesday</h3>
+                        <h4 class=weekday>Wednesday</h4>
                     </th>
                     <th class="thursday">
-                        <h3 class="month"></h3>
+                        <!-- <h4 class="month"></h4> -->
                         <h2 class="date"></h2>
-                        <h3 class=weekday>Thursday</h3>
+                        <h4 class=weekday>Thursday</h4>
                     </th>
                     <th class="friday">
-                        <h3 class="month"></h3>
+                        <!-- <h4 class="month"></h4> -->
                         <h2 class="date"></h2>
-                        <h3 class=weekday>Friday</h3>
+                        <h4 class=weekday>Friday</h4>
                     </th>
                     <th class="saturday">
-                        <h3 class="month"></h3>
+                        <!-- <h4 class="month"></h4> -->
                         <h2 class="date"></h2>
-                        <h3 class=weekday>Saturday</h3>
+                        <h4 class=weekday>Saturday</h4>
                     </th>
                 </tr>
                 <tr class="week_progress">
-                    <td class="sun">
-                        <div id="sun_graph"></div>
+                    <td class="sunday">
+                        <div id="sunday_graph"></div>
                     </td>
-                    <td class="mon">
-                        <div id="mon_graph"></div>
+                    <td class="monday">
+                        <div id="monday_graph"></div>
                     </td>
-                    <td class="tue">
-                        <div id="tue_graph"></div>
+                    <td class="tuesday">
+                        <div id="tuesday_graph"></div>
                     </td>
-                    <td class="wed">
-                        <div id="wed_graph"></div>
+                    <td class="wednesday">
+                        <div id="wednesday_graph"></div>
                     </td>
-                    <td class="thur">
-                        <div id="thur_graph"></div>
+                    <td class="thursday">
+                        <div id="thursday_graph"></div>
                     </td>
-                    <td class="fri">
-                        <div id="fri_graph"></div>
+                    <td class="friday">
+                        <div id="friday_graph"></div>
                     </td>
-                    <td class="sat">
-                        <div id="sat_graph"></div>
+                    <td class="saturday">
+                        <div id="saturday_graph"></div>
                     </td>
                 </tr>
             </table>

@@ -1,8 +1,5 @@
 var weekActivity = (function () {
-    let today = new Date(2018,6,15);
-    let sunday = getWeekStart(today);
-    let saturday = getWeekEnd(today);
-    let dates = [];
+    let today, sunday, saturday, dates;
 
     function getWeekStart(today) {
         let tempDate = new Date(today.valueOf());
@@ -31,20 +28,12 @@ var weekActivity = (function () {
         let date = new Date(sunday.valueOf());
         date.setDate(date.getDate() + weekday);
 
+        const weekday_str = weekdays[date.getDay()];
+
         let cssClass = `.${weekdays[date.getDay()].toLowerCase()}`;
 
         function toString(){
             return `${date.getMonth()+1}-${date.getDate()}-${date.getFullYear()}`
-        }
-
-        function formatData(data) {
-            let left = data.goal - data.steps;
-        
-            return {
-                steps: data.steps,
-                left: left,
-                percent: data.percent
-            }
         }
 
         function getData() {
@@ -52,17 +41,55 @@ var weekActivity = (function () {
 
             return makeRequest('GET', `${url}${toString()}`).then(result => {
                 let data = JSON.parse(result);
-                return formatData(data);
+                return data;
             });
+        }
+
+        function renderDateHeader() {
+            // let monthLabel = document.querySelector(`${cssClass} > .month`);
+            let dateLabel = document.querySelector(`${cssClass} > .date`);
+
+            // monthLabel.innerText = months[date.getMonth()];
+            dateLabel.innerText = date.getDate();
+        }
+
+        function renderActivityProgress(data) {
+            const inactive_min = data.inactive_time.hours * 60 + data.inactive_time.minutes;
+            const active_time = (24 * 60) - inactive_min;
+            const percent_active = active_time / (24 * 60) * 100;
+
+            var chart = c3.generate({
+                bindto: `#${weekday_str.toLowerCase()}_graph`,
+                data: {
+                  columns: [
+                    ['Active Time', percent_active],
+                    ['Goal Progress', data.percent]
+                  ],
+                  colors: {
+                  'Active Time':'#b94305',
+                  'Goal Progress':'#4A2B4B',
+                  },
+                  type: 'gauge'
+                },
+                gauge: {
+                  label: {
+                    // show: false
+                  }
+                },
+                size: {
+                  height: 200,
+                  width: 165
+                },
+                padding: {
+                    bottom: 10
+                }
+              });
         }
 
         function renderData() {
             return getData().then(data => {
-                let monthLabel = document.querySelector(`${cssClass} > .month`);
-                let dateLabel = document.querySelector(`${cssClass} > .date`);
-
-                monthLabel.innerText = months[date.getMonth()];
-                dateLabel.innerText = date.getDate();
+                renderDateHeader();
+                renderActivityProgress(data);
             });
         }
 
@@ -71,12 +98,29 @@ var weekActivity = (function () {
         }
     }
 
-    setWeekTitle();
+    function displayWeek(date) {
+        today = date;
+        sunday = getWeekStart(today);
+        saturday = getWeekEnd(today);
+        dates = [];
 
-    for(let i = 0; i < 7; i++) {
-        let weekday = new Weekday(i);
-        weekday.renderData();
-        dates.push(weekday);
+        document.getElementById('activity_loader').style.visibility="visible";
+        setWeekTitle();
+        for(let i = 0; i < 7; i++) {
+            let weekday = new Weekday(i);
+            
+            dates.push(weekday.renderData());
+        }
+        Promise.all(dates).then(() => {
+            document.getElementById('activity_loader').style.visibility="hidden";
+        })
     }
+
+    var picker = new Pikaday({
+        field: document.getElementById('datepicker'),
+        trigger: document.getElementById('datepicker-button'),
+        onSelect: displayWeek
+    });
+    displayWeek(new Date(2018,8,30));
 })()
 
