@@ -8,8 +8,17 @@
     <div class="calander_week" style="display:table; margin:auto">
         <div class="month_header">
             <h2 style="display:inline-block"><span id="start_date"></span> - <span id="end_date"></span></h2>
+            <!-- <div class="datefilter" style="display:inline-block">
+                <button class="btn" id="decrement_day" type="reset" onclick="decrementDay()">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="btn" id="increment_day" type="reset" onclick="incrementDay()">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div> -->
             <div type="text" id="datepicker" style="float:right"></div>
-            <div style="display:inline-block; padding: 10px"><button id="datepicker-button" style="background-color:transparent; border:none"><i class="fa fa-calendar fa-2x" aria-hidden="true"></i></button></div>
+            <div style="display:inline-block; padding: 10px"><button id="datepicker-button" style="background-color:transparent; border:none"><i
+                        class="fa fa-calendar fa-2x" aria-hidden="true"></i></button></div>
         </div>
         <div>
             <div id="activity_loader">
@@ -18,37 +27,30 @@
             <table class="week">
                 <tr class="week_header">
                     <th class="sunday">
-                        <!-- <h4 class="month"></h4> -->
                         <h2 class="date"></h2>
                         <h4 class=weekday>Sunday</h4>
                     </th>
                     <th class="monday">
-                        <!-- <h4 class="month"></h4> -->
                         <h2 class="date"></h2>
                         <h4 class=weekday>Monday</h4>
                     </th>
                     <th class="tuesday">
-                        <!-- <h4 class="month"></h4> -->
                         <h2 class="date"></h2>
                         <h4 class=weekday>Tuesday</h4>
                     </th>
                     <th class="wednesday">
-                        <!-- <h4 class="month"></h4> -->
                         <h2 class="date"></h2>
                         <h4 class=weekday>Wednesday</h4>
                     </th>
                     <th class="thursday">
-                        <!-- <h4 class="month"></h4> -->
                         <h2 class="date"></h2>
                         <h4 class=weekday>Thursday</h4>
                     </th>
                     <th class="friday">
-                        <!-- <h4 class="month"></h4> -->
                         <h2 class="date"></h2>
                         <h4 class=weekday>Friday</h4>
                     </th>
                     <th class="saturday">
-                        <!-- <h4 class="month"></h4> -->
                         <h2 class="date"></h2>
                         <h4 class=weekday>Saturday</h4>
                     </th>

@@ -46,10 +46,8 @@ var weekActivity = (function () {
         }
 
         function renderDateHeader() {
-            // let monthLabel = document.querySelector(`${cssClass} > .month`);
             let dateLabel = document.querySelector(`${cssClass} > .date`);
 
-            // monthLabel.innerText = months[date.getMonth()];
             dateLabel.innerText = date.getDate();
         }
 
@@ -70,11 +68,6 @@ var weekActivity = (function () {
                   'Goal Progress':'#4A2B4B',
                   },
                   type: 'gauge'
-                },
-                gauge: {
-                  label: {
-                    // show: false
-                  }
                 },
                 size: {
                   height: 200,
