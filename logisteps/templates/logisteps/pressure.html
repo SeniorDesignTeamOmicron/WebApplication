@@ -1,0 +1,51 @@
+{% extends "logisteps/index.html" %}
+
+{% block page %}
+<div style="height:100%">
+    <div>
+        <h1 style="text-align:center">Pressure Breakdown</h1>
+    </div>
+    <div>
+        <div class="pressure month">
+            <h3>Past Month</h3>
+            <div class="shoe left">
+                <img src="../../static/logisteps/images/shoe-print.svg" alt="left shoe outline">
+                <p class="top-sensor"></p>
+                <p class="bottom-sensor"></p>
+            </div>
+            <div class="shoe right">
+                <img src="../../static/logisteps/images/shoe-print.svg" alt="right shoe outline">
+                <p class="top-sensor"></p>
+                <p class="bottom-sensor"></p>
+            </div>
+        </div>
+        <div class="pressure week">
+            <h3>Past Week</h3>
+            <div class="shoe left">
+                <img src="../../static/logisteps/images/shoe-print.svg" alt="left shoe outline">
+                <p class="top-sensor"></p>
+                <p class="bottom-sensor"></p>
+            </div>
+            <div class="shoe right">
+                <img src="../../static/logisteps/images/shoe-print.svg" alt="right shoe outline">
+                <p class="top-sensor"></p>
+                <p class="bottom-sensor"></p>
+            </div>
+        </div>
+        <div class="pressure day">
+            <h3>Past Day</h3>
+            <div class="shoe left">
+                <img src="../../static/logisteps/images/shoe-print.svg" alt="left shoe outline">
+                <p class="top-sensor"></p>
+                <p class="bottom-sensor"></p>
+            </div>
+            <div class="shoe right">
+                <img src="../../static/logisteps/images/shoe-print.svg" alt="right shoe outline">
+                <p class="top-sensor"></p>
+                <p class="bottom-sensor"></p>
+            </div>
+        </div>
+    </div>
+    <div class="description"></div>
+</div>
+{% endblock %}

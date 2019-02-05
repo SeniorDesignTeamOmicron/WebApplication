@@ -234,4 +234,72 @@ html, body {
     height: 80%;
 }
 
+.pressure {
+    display: inline-block;
+    padding: 10px;
+    border: 2px solid black;
+    vertical-align: top;
 
+    h3 {
+        text-align: center;
+    }
+}
+
+.shoe {
+    display: inline-block;
+    color: rgb(73, 39, 74);
+    font-size: 25px;
+    font-weight: 600;
+    line-height: 0px;
+
+    img {
+        height: 500px;
+        position: relative;
+    }
+
+    
+    &.left {
+        .top-sensor {
+            position: relative;
+            top: -435px;
+            height: 0px;
+            margin: 0px;
+            padding: 0px;
+            left: 42px;
+        }
+
+        .bottom-sensor {
+            position: relative;
+            top: -130px;
+            height: 0px;
+            margin: 0px;
+            padding: 0px;
+            left: 90px;    
+        }
+
+    }
+
+    &.right {
+        img {
+            transform: scaleX(-1)
+        }
+
+        .top-sensor {
+            position: relative;
+            top: -435px;
+            height: 0px;
+            margin: 0px;
+            padding: 0px;
+            left: 82px;
+        }
+
+        .bottom-sensor {
+            position: relative;
+            top: -130px;
+            height: 0px;
+            margin: 0px;
+            padding: 0px;
+            left: 35px;
+        }
+    }
+}

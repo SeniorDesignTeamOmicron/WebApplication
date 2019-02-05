@@ -114,6 +114,12 @@ class Activity(ProtectedView):
     def get(self, request, *args, **kwargs):
         return render(request, 'logisteps/activity.html')
 
+class PressureView(ProtectedView):
+    template_name = 'pressure.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, 'logisteps/pressure.html')
+
 class MapView(ProtectedView):
     template_name = 'location_map.html'
 

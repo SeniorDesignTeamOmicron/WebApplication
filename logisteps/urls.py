@@ -10,5 +10,6 @@ urlpatterns = [
     path('steps_over_time', views.StepsOverTime.as_view(), name='steps_over_time'),
     path('steps_by_day', views.StepsByDay.as_view(), name='steps_by_day'),
     path('activity', views.Activity.as_view(), name='activity'),
+    path('pressure', views.PressureView.as_view(), name='pressure'),
     path('map', views.MapView.as_view(), name='map')
 ]
