@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = {
+    "DATE_TIME_INPUT_FORMATS": ["iso-8601"]
 }
 
 MIDDLEWARE = [
@@ -71,6 +72,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'logisteps.context_processors.logistepsUser'
             ],
         },
     },
@@ -84,8 +86,12 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': 'localhost',
+        'NAME': 'Logisteps_db',
+        'USER': 'postgres',
+        'PASSWORD': '',
+        'PORT': '5432'
     }
 }
 

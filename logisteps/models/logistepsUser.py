@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from .shoe import Shoe
 
+from math import floor
+
 # Create your models here.   
 
 class LogistepsUser(models.Model):
@@ -34,6 +36,14 @@ class LogistepsUser(models.Model):
     @property
     def fullname(self):
         return self.user.first_name + " " + self.user.last_name
+
+    @property
+    def height_ft(self):
+        return floor(self.height / 12)
+
+    @property
+    def height_in(self):
+        return self.height % 12
     
     def delete(self, *args, **kwargs):
         self.user.delete()
