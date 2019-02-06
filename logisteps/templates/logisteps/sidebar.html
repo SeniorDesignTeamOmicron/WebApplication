@@ -1,8 +1,9 @@
-<div class="sidenav">
+<div class="sidenav" style="position:relative">
     <a href="{% url 'logisteps:recent'%}">Recent</a>
     <a href="{% url 'logisteps:steps_over_time' %}">Steps Over Time</a>
     <a href="{% url 'logisteps:steps_by_day' %}">Weekday Breakdown</a>
     <a href="{% url 'logisteps:activity' %}">Activity By Week</a>
     <a href="{% url 'logisteps:pressure' %}">Pressure</a>
     <a href="{% url 'logisteps:map' %}">Map</a>
+    <a href="{% url 'logisteps:index' %}" style="position:absolute; bottom:40px; border:none; margin: auto; padding: 5px;"><img src="../../static/logisteps/images/logo.png" alt="Logisteps Logo" style="width:100%"></a>
 </div>
