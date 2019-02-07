@@ -1,6 +1,7 @@
+{% load static %}
 <nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #49274A;">
     <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-        <a class="navbar-brand" href="{% url 'logisteps:index' %}"><img src="../../static/logisteps/images/logo.png" alt="Logisteps Logo" height="50px" width="100px"></a>
+        <a class="navbar-brand" href="{% url 'logisteps:index' %}"><img src="{% static 'logisteps/images/logo.png' %}" alt="Logisteps Logo" height="50px" width="100px"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
             aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -28,7 +29,7 @@
                     {% if user.is_authenticated %}
                     <div class="profile-card">
                         <h3>{{ logistepsUser.fullname }}</h3>
-                        <img src="../../static/logisteps/images/default-profile-picpng.png" alt="default profile pic" style="width: 50%">
+                        <img src="{% static 'logisteps/images/default-profile-picpng.png' %}" alt="default profile pic" style="width: 50%">
                         <p>Username: {{ user.get_username }}</p>
                         <p><i class="far fa-envelope" style="padding-right:5px"></i>{{ user.email }}</p>
                         <P>Height: {{ logistepsUser.height_ft }}ft. {{ logistepsUser.height_in }}in.</P>
@@ -37,7 +38,7 @@
                     </div>
                     <div class="dropdown-divider" style="border-color:gray"></div>
                     <div>
-                    <a href="#" class="btn btn-outline-secondary" role="button" style="display:block; width: 90%; margin: auto">
+                    <a href="{% url 'logisteps:update_profile' %}" class="btn btn-outline-secondary" role="button" style="display:block; width: 90%; margin: auto">
                         Edit Profile
                     </a>
                     </div>

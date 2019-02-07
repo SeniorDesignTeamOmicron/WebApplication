@@ -13,8 +13,6 @@ class CustomUserCreationForm(forms.Form):
     last_name = forms.CharField(label="Lastname", max_length=50)
     password1 = forms.CharField(label='Enter password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Confirm password', widget=forms.PasswordInput)
-    # shoe1 = forms.DecimalField(label='Left Shoe Size', min_value=4, max_value=16, max_digits=3, decimal_places=1)
-    # shoe2 = forms.DecimalField(label='Right Shoe Size', min_value=4, max_value=16, max_digits=3, decimal_places=1)
 
     def clean_username(self):
         username = self.cleaned_data['username'].lower()
@@ -47,15 +45,7 @@ class CustomUserCreationForm(forms.Form):
             last_name=self.cleaned_data['last_name'],
             password=self.cleaned_data['password1']
         )
-        # lShoe = Shoe.objects.create(foot='L', size=self.cleaned_data['shoe1'])
-        # rShoe = Shoe.objects.create(foot='R', size=self.cleaned_data['shoe2'])
 
-        # logistepsUser = LogistepsUser.objects.create(left_shoe=lShoe, right_shoe=rShoe, user=user)
-        # lShoe.save()
-        # rShoe.save()
-        # logistepsUser.save()
-
-        # return logistepsUser
         return user
 
 class UserCompletionForm(forms.Form):
@@ -84,3 +74,29 @@ class UserCompletionForm(forms.Form):
         logistepsUser.save()
 
         return logistepsUser
+
+class ShoeUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Shoe
+        exclude = ('id', 'foot')
+
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('email', 'first_name', 'last_name')
+
+class LogistepsUserUpdateForm(forms.ModelForm):
+    height_feet = forms.IntegerField(label='Height (ft.)', min_value=0, required=True)
+    height_inches = forms.IntegerField(label='Height (in.)', min_value=0, max_value=12, required=True)
+
+    class Meta:
+        model = LogistepsUser
+        exclude = ('user', 'left_shoe', 'right_shoe', 'height')
+    
+    def save(self, commit=True):
+        self.instance.weight = self.cleaned_data['weight']
+        self.instance.height = (self.cleaned_data['height_feet'] * 12) + self.cleaned_data['height_inches']
+        self.instance.step_goal = self.cleaned_data['step_goal']
+        
+        self.instance.save()
+        return self.instance

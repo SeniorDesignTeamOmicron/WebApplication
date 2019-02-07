@@ -1,0 +1,60 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <div class="row" style="height: 100%;">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6">
+        <h3>User update form</h3>
+        <form action="" method="post">{% csrf_token %}
+          <div class="row">
+            <div class="form-group col-sm-12">
+              {{ userForm.email.label_tag }}
+              {{ userForm.email }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-6">
+              {{ userForm.first_name.label_tag }}
+              {{ userForm.first_name }}
+            </div>
+            <div class="form-group col-sm-6">
+              {{ userForm.last_name.label_tag }}
+              {{ userForm.last_name }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-6">
+              {{ logistepsUserForm.height_feet.label_tag }}
+              {{ logistepsUserForm.height_feet }}
+            </div>
+            <div class="form-group col-sm-6">
+              {{ logistepsUserForm.height_inches.label_tag }}
+              {{ logistepsUserForm.height_inches }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-6">
+              {{ logistepsUserForm.weight.label_tag }}
+              {{ logistepsUserForm.weight }}
+            </div>
+            <div class="form-group col-sm-6">
+              {{ logistepsUserForm.step_goal.label_tag }}
+              {{ logistepsUserForm.step_goal }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-6">
+              <label>Left Shoe Size:</label>
+              {{ leftShoeForm.size }}
+            </div>
+            <div class="form-group col-sm-6">
+              <label>Right Shoe Size:</label>
+              {{ rightShoeForm.size }}
+            </div>
+          </div>
+          <input type="submit" value="update" />
+        </form>  
+    </div>
+    <div class="col-sm-3"></div>
+  </div>
+{% endblock %}

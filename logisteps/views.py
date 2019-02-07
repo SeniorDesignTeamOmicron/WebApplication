@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
@@ -9,9 +9,12 @@ from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from django.views.generic import View
 from datetime import datetime, timedelta
+from django.views.generic.edit import UpdateView
 
-from .models import LogistepsUser, Step
-from .forms import CustomUserCreationForm, UserCompletionForm
+from math import floor
+
+from .models import LogistepsUser, Step, Shoe
+from .forms import CustomUserCreationForm, UserCompletionForm, LogistepsUserUpdateForm, UserUpdateForm, ShoeUpdateForm
 from utils.step_utils import getInactiveTime, getLeastActiveHour, getMostActiveHour, avgStepsPerHour, getDateSummary
 from utils.helper import to12HourTime
 
@@ -61,6 +64,39 @@ def completeProfile(request):
         f = UserCompletionForm(request.user)
 
     return render(request, 'logisteps/complete_profile.html', {'form': f})
+
+@login_required
+def updateProfile(request):
+    logistepsUser = get_object_or_404(LogistepsUser, user_id=request.user.id)
+    left_shoe = get_object_or_404(Shoe, id=logistepsUser.left_shoe_id)
+    right_shoe = get_object_or_404(Shoe, id=logistepsUser.right_shoe_id)
+
+    initialHeight = {
+        'height_feet': floor(logistepsUser.height / 12),
+        'height_inches': logistepsUser.height % 12
+    }
+
+    userForm = UserUpdateForm(request.POST or None, instance=request.user)
+    logistepsUserForm = LogistepsUserUpdateForm(request.POST or None, instance=logistepsUser, initial=initialHeight)
+    leftShoeForm = ShoeUpdateForm(request.POST or None, instance=left_shoe, prefix='left')
+    rightShoeForm = ShoeUpdateForm(request.POST or None, instance=right_shoe, prefix='right')
+
+    context = {
+        'userForm': userForm,
+        'logistepsUserForm': logistepsUserForm,
+        'leftShoeForm': leftShoeForm,
+        'rightShoeForm': rightShoeForm
+    }
+
+    if request.method == 'POST':
+        if userForm.is_valid() and logistepsUserForm.is_valid() and leftShoeForm.is_valid() and rightShoeForm.is_valid():
+           userForm.save()
+           logistepsUserForm.save()
+           leftShoeForm.save()
+           rightShoeForm.save()
+           return redirect('/logisteps/')
+    
+    return render(request, 'logisteps/update_profile.html', context)
 
 class RecentView(ProtectedView):
     template_name = 'recent.html'
