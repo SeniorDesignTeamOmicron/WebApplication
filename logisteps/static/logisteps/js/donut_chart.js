@@ -24,7 +24,7 @@ function makeRequest (method, url) {
 
 function loadRecentData(){
     const summaryEndpoint = '/api/steps/summary/?date=';
-    const today = new Date(2018,6,15);
+    const today = new Date();
 
     function formatDonutData(dataString) {
         let data = JSON.parse(dataString);

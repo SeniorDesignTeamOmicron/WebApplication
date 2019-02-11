@@ -44,7 +44,7 @@ def avgStepsPerHour(queryset, date):
     now = datetime.now()
 
     if date == now.date():
-        hours_elapsed = now - now.replace(hour=0, minute=0, second=0, microsecond=0).total_hours()
+        hours_elapsed = (now - now.replace(hour=0, minute=0, second=0, microsecond=0)).total_seconds() / 3600
         steps_per_hour = steps / hours_elapsed
     else:
         steps_per_hour = steps / 24
@@ -91,18 +91,20 @@ def getDateSummary(user, date):
     inactive_time = getInactiveTime(queryset)
     steps_per_hour = avgStepsPerHour(queryset, date)
 
+    print(least_active_hour)
+
     # do statistics here, e.g.
     stats = {
         'steps': steps,
         'goal': goal,
         'percent': percent_complete,
         'least_active': {
-            'hour': least_active_hour.get('datetime__hour'),
-            'steps': least_active_hour.get('id__count')
+            'hour': least_active_hour.get('datetime__hour') if least_active_hour else 'n/a',
+            'steps': least_active_hour.get('id__count') if least_active_hour else 0
         },
         'most_active': {
-            'hour': most_active_hour.get('datetime__hour'),
-            'steps': most_active_hour.get('id__count')
+            'hour': most_active_hour.get('datetime__hour') if most_active_hour else 'n/a',
+            'steps': most_active_hour.get('id__count') if most_active_hour else 0
         },
         'inactive_time': inactive_time,
         'steps_per_hour': steps_per_hour

@@ -102,11 +102,14 @@ class RecentView(ProtectedView):
     template_name = 'recent.html'
     
     def formatResponse(self, data):
-        print(data.get('least_active_hour'))
+        steps = data.get('steps', 0)
+        most_active_hour = data.get('most_active').get('hour')
+        least_active_hour = data.get('least_active').get('hour')
+
         stats = {
             'steps': data.get('steps'),
-            'least_active': to12HourTime(data.get('least_active').get('hour')),
-            'most_active': to12HourTime(data.get('most_active').get('hour')),
+            'least_active': to12HourTime(least_active_hour) if steps > 0 else 'N/A',
+            'most_active': to12HourTime(most_active_hour) if steps > 0 else 'N/A',
             'inactive_time': data.get('inactive_time'),
             'steps_per_hour': str(round(data.get('steps_per_hour'), 2))
         }
