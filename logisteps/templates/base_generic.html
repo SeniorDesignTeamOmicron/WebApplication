@@ -31,7 +31,7 @@
   <body>
     <div class="stretch-container">
       <header>
-          {% if user.is_authenticated %}
+          {% if user.is_authenticated and logistepsUser is not None %}
               {% include "logisteps/topbar.html" %}
           {% endif %}
       </header>
