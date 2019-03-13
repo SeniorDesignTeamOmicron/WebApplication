@@ -125,6 +125,6 @@ var weekActivity = (function () {
         trigger: document.getElementById('datepicker-button'),
         onSelect: displayWeek
     });
-    displayWeek(new Date(2018,8,30));
+    displayWeek(new Date());
 })()
 

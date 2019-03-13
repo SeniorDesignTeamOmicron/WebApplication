@@ -117,7 +117,7 @@ class RecentView(ProtectedView):
         return stats
 
     def summarize(self, request, *args, **kwargs):
-        today = datetime(2018, 8, 17)
+        today = datetime.today()
 
         todaySum = getDateSummary(request.user, today)
         yesterdaySum = getDateSummary(request.user, today - timedelta(days=1))

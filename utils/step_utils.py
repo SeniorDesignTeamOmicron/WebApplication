@@ -91,8 +91,6 @@ def getDateSummary(user, date):
     inactive_time = getInactiveTime(queryset)
     steps_per_hour = avgStepsPerHour(queryset, date)
 
-    print(least_active_hour)
-
     # do statistics here, e.g.
     stats = {
         'steps': steps,

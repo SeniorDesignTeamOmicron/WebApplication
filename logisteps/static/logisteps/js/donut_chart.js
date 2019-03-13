@@ -62,7 +62,7 @@ function loadRecentData(){
                 hide: true
             },
             donut: {
-                title: 'Progress: ' + stepData.percent.toPrecision(2) + '%',
+                title: 'Progress: ' + stepData.percent.toFixed(2) + '%',
                 label: {
                     show: false
                 }
