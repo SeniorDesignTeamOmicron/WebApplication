@@ -198,13 +198,13 @@ class PressureSnapshot(generics.GenericAPIView):
         if query_date is not None and datetime.strptime(query_date, "%m-%d-%Y") > datetime.today():
             response = Response({'message': 'date must not be in the future'}, status=status.HTTP_400_BAD_REQUEST)
         else:
-            # try:
+            try:
                 query_date = datetime.today() if query_date is None else datetime.strptime(query_date, '%m-%d-%Y')
 
                 pressure_snap = getPressureSnapshot(self.request.user, query_date)
                 response = Response(pressure_snap, status=status.HTTP_200_OK)
-            # except:
-            #     response = Response({'message': 'Invalid date format'}, status=status.HTTP_400_BAD_REQUEST)
+            except:
+                response = Response({'message': 'Invalid date format'}, status=status.HTTP_400_BAD_REQUEST)
         
         return response
 
