@@ -397,12 +397,12 @@
 							"basic": [
 								{
 									"key": "password",
-									"value": "",
+									"value": "test",
 									"type": "string"
 								},
 								{
 									"key": "username",
-									"value": "test8",
+									"value": "larsonma",
 									"type": "string"
 								}
 							]
@@ -418,7 +418,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "[{\r\n    \"datetime\": \"2018-07-03T01:39:47+05:00\",\r\n    \"sensor_reading\": {\r\n      \"location\": \"B\",\r\n      \"pressure\": 17.0183,\r\n      \"shoe\": \"left\"\r\n    },\r\n    \"location\": {\r\n      \"latitude\": 178.92323,\r\n      \"longitude\": -9.040912\r\n    }\r\n  }]"
+							"raw": "[{\r\n    \"datetime\": \"2019-03-19T01:39:47+05:00\",\r\n    \"shoe\": \"left\",\r\n    \"sensor_readings\": [{\r\n      \"location\": \"B\",\r\n      \"pressure\": 28.0183\r\n    }],\r\n    \"location\": {\r\n      \"latitude\": 178.92323,\r\n      \"longitude\": -9.040912\r\n    }\r\n  },{\r\n    \"datetime\": \"2019-03-19T01:39:47+05:00\",\r\n    \"shoe\": \"right\",\r\n    \"sensor_readings\": [{\r\n      \"location\": \"B\",\r\n      \"pressure\": 30.0183\r\n    },\r\n    {\r\n      \"location\": \"T\",\r\n      \"pressure\": 31.0183\r\n    }],\r\n    \"location\": {\r\n      \"latitude\": 178.92323,\r\n      \"longitude\": -9.040912\r\n    }\r\n  }\r\n  ]"
 						},
 						"url": {
 							"raw": "http://127.0.0.1:8000/api/steps/",
@@ -445,10 +445,10 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "17cff0d4-31ee-4099-ac2c-3e91ab1a2115",
+								"id": "3d5b283d-6be6-41dc-8eab-bb2a66f040ed",
 								"exec": [
 									"var moment = require('moment')\r",
-									"pm.globals.set(\"today\", moment().format(\"YYYY-MM-DD\"))"
+									"pm.globals.set(\"today\", moment(\"2019-03-14\").format(\"YYYY-MM-DD\"))"
 								],
 								"type": "text/javascript"
 							}
@@ -460,12 +460,12 @@
 							"basic": [
 								{
 									"key": "password",
-									"value": "",
+									"value": "test",
 									"type": "string"
 								},
 								{
 									"key": "username",
-									"value": "test8",
+									"value": "larsonma",
 									"type": "string"
 								}
 							]
