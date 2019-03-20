@@ -25,14 +25,19 @@ class ShoeSerializer(serializers.ModelSerializer):
         return instance
 
 class SensorReadingSerializer(serializers.ModelSerializer):
-    shoe = serializers.CharField()
+    # # shoe = serializers.CharField()
+    # # step = serializers.on
+    # shoe = serializers.SerializerMethodField('shoe')
+    # step = serializers.SerializerMethodField('step')
 
     class Meta:
         model = SensorReading
-        fields = ('pressure', 'location', 'shoe')
+        fields = ('pressure', 'location')
     
     def create(self, validated_data):
-        shoe_data = validated_data.pop('shoe')
+        print('creating sensor reading')
+        self.shoe = validated_data.pop('shoe')
+        self.step = validated_data.pop('step')
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -102,17 +107,19 @@ class LogistepsUserSerializer(serializers.ModelSerializer):
 
 class StepSerializer(serializers.ModelSerializer):
     location = LocationSerializer()
-    sensor_reading = SensorReadingSerializer()
+    sensor_readings = SensorReadingSerializer(many=True)
     datetime = serializers.DateTimeField(format='iso-8601')
+    shoe = serializers.CharField(write_only=True)
 
     class Meta:
         model = Step
-        fields = ('datetime', 'sensor_reading', 'location')
+        fields = ('datetime', 'sensor_readings', 'shoe','location')
     
     def create(self, validated_data):
         location_data = validated_data.pop('location')
-        sensor_reading_data = validated_data.pop('sensor_reading')
-        shoe_data = sensor_reading_data.pop('shoe')
+        sensor_reading_data = validated_data.pop('sensor_readings')
+
+        shoe_data = validated_data.pop('shoe')
 
         username =  self.context['request'].user
         user = User.objects.get(username=username)
@@ -124,8 +131,9 @@ class StepSerializer(serializers.ModelSerializer):
             shoe_obj = Shoe.objects.get(pk=logistepsUser.left_shoe_id)
 
         location = Location.objects.create(**location_data)
-        sensor_reading_obj = SensorReading.objects.create(**sensor_reading_data, shoe=shoe_obj)
-        step = Step.objects.create(**validated_data, user=logistepsUser, location=location, sensor_reading=sensor_reading_obj)
-        return step
+        step = Step.objects.create(**validated_data, user=logistepsUser, location=location)
 
-# class StepSummary(serializers.BaseSerializer):
+        for reading in sensor_reading_data:
+            SensorReading.objects.create(**reading, shoe=shoe_obj, step=step)
+
+        return step
