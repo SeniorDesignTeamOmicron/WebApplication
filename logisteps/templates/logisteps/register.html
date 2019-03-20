@@ -1,14 +1,12 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
+{% load static %}
 
 <div class="register">
-    <div class="logo-banner">
-        <h1 class="logo-text">LogiSteps</h1>
-    </div>
+    
     <div id="form">
-        {% comment %} <h1 class="center">Logisteps</h1> {% endcomment %}
-        <h1>Create Account</h1>
+        <img src="{% static 'logisteps/images/logo.png' %}" alt="LogiSteps Logo" style="width:400px;display: block;margin: auto;">
 
         <form method="post">
             {% csrf_token %}
