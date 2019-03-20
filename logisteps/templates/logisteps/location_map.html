@@ -13,4 +13,11 @@
         this map will update to reflect your daily movement.
     </p>
 </div>
+{% load static %}
+<script src="{% static 'logisteps/js/locationMap.js' %}"></script>
+<script async defer>
+    var script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&callback=initMap`;
+    document.getElementsByTagName('script')[0].parentNode.appendChild(script);
+</script>
 {% endblock %}

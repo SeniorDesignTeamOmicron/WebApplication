@@ -3,6 +3,34 @@ html, body {
     overflow-x: hidden;
 }
 
+input, select{
+    width: 100%;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 1px;
+    height: 40px;
+    box-sizing: border-box;
+}
+
+label {
+  font-family: 'Roboto', sans-serif;
+}
+
+button[type=submit],input[type=submit] {
+    width: 100%;
+    background-color: #49274A;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+}
+
+button[type=submit]:hover,input[type=submit]:hover {
+    background-color: rgba(73, 39, 74, 0.774)
+}
+
 .stretch-container {
     display: flex;
     flex-direction: column;
