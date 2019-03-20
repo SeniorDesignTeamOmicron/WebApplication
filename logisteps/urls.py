@@ -3,7 +3,7 @@ from . import views
 
 app_name = 'logisteps'
 urlpatterns = [
-    path('', views.IndexView.as_view(), name='index'),
+    path('', views.RecentView.as_view(), name='recent'),
     path('register/', views.register, name='register'),
     path('profile/complete/', views.completeProfile, name='complete_profile'),
     path('profile/update/', views.updateProfile, name='update_profile'),

@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from logisteps import views
 
 # router = routers.DefaultRouter()
 # router.register(r'users', views.UserViewSet)
@@ -25,5 +26,6 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('logisteps/', include('logisteps.urls')),
     path('admin/', admin.site.urls),
-    path('api/', include('logisteps_api.urls'))
+    path('api/', include('logisteps_api.urls')),
+    path('', views.RecentView.as_view())
 ]
