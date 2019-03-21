@@ -204,9 +204,24 @@ def getStepBreakdown(user, groupyby):
 
 def getAvgPressureBySensor(steps, shoe, date_range):
     steps = steps.filter(datetime__range=date_range)
-    return SensorReading.objects.filter(step_id__in=steps.values_list('id', flat=True), shoe_id=shoe) \
-        .values('location') \
-        .annotate(avg_pressure=Avg('pressure'))
+    sensor_readings = SensorReading.objects.filter(step_id__in=steps.values_list('id', flat=True), shoe_id=shoe)
+
+    if sensor_readings.count() > 0:
+        return sensor_readings.values('location').annotate(avg_pressure=Avg('pressure'))
+    else:
+        sensors = SensorReading.objects.filter(shoe_id=shoe) \
+            .values('location') \
+            .annotate(count=Count('id'))
+
+        pressure_data = []
+        
+        for sensor in sensors:
+            pressure_data.append({
+                'location': sensor.get('location'),
+                'avg_pressure': 0
+            })
+        
+        return pressure_data
 
 def getPressureSnapshot(user, date):
     logisetpsUser = LogistepsUser.objects.get(user_id=user.id)

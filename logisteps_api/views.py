@@ -203,8 +203,8 @@ class PressureSnapshot(generics.GenericAPIView):
 
                 pressure_snap = getPressureSnapshot(self.request.user, query_date)
                 response = Response(pressure_snap, status=status.HTTP_200_OK)
-            except:
-                response = Response({'message': 'Invalid date format'}, status=status.HTTP_400_BAD_REQUEST)
+            except Exception as e:
+                response = Response(e, status=status.HTTP_400_BAD_REQUEST)
         
         return response
 
