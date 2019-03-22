@@ -21,3 +21,15 @@ function makeRequest (method, url) {
         xhr.send();
     });
 }
+
+function getWeekStart(today) {
+    let tempDate = new Date(today.valueOf());
+    tempDate.setDate(today.getDate() - today.getDay());
+    return tempDate;
+}
+
+function getWeekEnd(today) {
+    let tempDate = new Date(today.valueOf());
+    tempDate.setDate(today.getDate() + (6 - today.getDay()));
+    return tempDate;
+}

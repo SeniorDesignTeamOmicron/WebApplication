@@ -1,12 +1,22 @@
 function setWeekFilterText(start, end){
     const text = `${start.getMonth()+1}/${start.getDate()}/${start.getFullYear()} - ${end.getMonth()+1}/${end.getDate()}/${end.getFullYear()}`;
-    document.getElementById("week_filter_text").innerText = text;
+    // document.getElementById("week_filter_text").innerText = text;
 }
 
 var lineChart = (function() {
     var end = new Date();
-    const start = new Date(end.valueOf());
+    let start = new Date(end.valueOf());
+    let range = 6;
     var chart;
+
+    function adjustRange(days) {
+        if (days >= 6) {
+            range = days;
+            start = new Date(end)
+            start.setDate(end.getDate() - days);
+            refresh();
+        }
+    }
 
     function changeDate(days) {
         const today = new Date();
@@ -69,9 +79,11 @@ var lineChart = (function() {
         const endPoint = '/api/steps/count/?';
         const url = `${endPoint}start=${start.getMonth()+1}-${start.getDate()}-${start.getFullYear()};end=${end.getMonth()+1}-${end.getDate()}-${end.getFullYear()}`
 
+        document.getElementById('activity_loader').style.visibility="visible";
         return makeRequest('GET', url).then(result => {
             let data = JSON.parse(result);
             
+            document.getElementById('activity_loader').style.visibility="hidden";
             return formatData(data.count);
         });
     }
@@ -95,6 +107,14 @@ var lineChart = (function() {
             axis: {
                 x: {
                     type: 'category',
+                    tick: {
+                        rotate: 90,
+                        multiline: false,
+                        culling: {
+                            max: 30
+                        }
+                    },
+                    height: 90
                 }
             },
             legend: {
@@ -105,6 +125,7 @@ var lineChart = (function() {
 
     function refresh() {
         getData(start, end).then(data => {
+            chart.internal.xAxis.tickCulling(30);
             chart.load({
                 columns: [
                     data.x,
@@ -144,7 +165,8 @@ var lineChart = (function() {
         decrementWeek: function() {
             changeDate(-7);
             refresh();
-        }
+        },
+        adjustRange
     }
 })();
 
@@ -163,4 +185,16 @@ function decrementWeek() {
 
 function incrementWeek() {
     lineChart.incrementWeek();
+}
+
+function setRange(selectedOption) {
+    const selectedRange = selectedOption.value;
+
+    if(selectedRange === 'Week') {
+        lineChart.adjustRange(6);
+    } else if (selectedRange === 'Month') {
+        lineChart.adjustRange(29);
+    } else if(selectedRange === 'Year') {
+        lineChart.adjustRange(364);
+    }
 }

@@ -1,18 +1,6 @@
 var weekActivity = (function () {
     let today, sunday, saturday, dates;
 
-    function getWeekStart(today) {
-        let tempDate = new Date(today.valueOf());
-        tempDate.setDate(today.getDate() - today.getDay());
-        return tempDate;
-    }
-
-    function getWeekEnd(today) {
-        let tempDate = new Date(today.valueOf());
-        tempDate.setDate(today.getDate() + (6 - today.getDay()));
-        return tempDate;
-    }
-
     function setWeekTitle(){
         startDateHeader = document.getElementById('start_date');
         endDateHeader = document.getElementById('end_date');
