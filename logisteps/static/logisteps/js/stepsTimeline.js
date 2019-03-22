@@ -4,13 +4,51 @@ function setWeekFilterText(start, end){
 }
 
 var lineChart = (function() {
-    var end = new Date(2018,6,15);
+    var end = new Date();
     const start = new Date(end.valueOf());
     var chart;
 
     function changeDate(days) {
-        end.setDate(end.getDate() + days);
-        start.setDate(start.getDate() + days);
+        const today = new Date();
+
+        if (validateDelta(days)) {
+            end.setDate(end.getDate() + days);
+            start.setDate(start.getDate() + days);
+        }
+
+        // Enable and disable buttons if needed
+        if (days > 0) {
+            if(!validateDelta(7)) {
+                document.getElementById("increment_week").disabled = true;
+            }
+
+            if(end.getDate() == today.getDate()) {
+                document.getElementById("increment_day").disabled = true;
+            }
+        }
+
+        if (days < 0) {
+            if(validateDelta(7)) {
+                document.getElementById("increment_week").disabled = false;
+            }
+
+            if(end.getDate() < today.getDate()) {
+                document.getElementById("increment_day").disabled = false;
+            }
+        }
+    }
+
+    function validateDelta(deltaDays) {
+        const today = new Date();
+
+        if (deltaDays <= 0) {
+            return true;
+        } else if (deltaDays > 0) {
+            const temp = new Date(end);
+            temp.setDate(end.getDate() + deltaDays);
+
+            return temp.getDate() <= today.getDate();
+        }
     }
 
     function formatData(data) {
@@ -77,11 +115,18 @@ var lineChart = (function() {
         setWeekFilterText(start, end)
     }
 
-    start.setDate(end.getDate() - 6);
-    setWeekFilterText(start, end)
+    function init() {
+        start.setDate(end.getDate() - 6);
+        setWeekFilterText(start, end)
+        document.getElementById("increment_day").disabled = true;
+        document.getElementById("increment_week").disabled = true;
+    }
+
+    init();
+
     getData(start, end).then(data => {
         chart = createChart('#linechart-week', data);
-    })
+    });
 
     return {
         incrementDate: function () {
@@ -90,6 +135,14 @@ var lineChart = (function() {
         },
         decrementDate: function () {
             changeDate(-1);
+            refresh();
+        },
+        incrementWeek: function() {
+            changeDate(7);
+            refresh();
+        },
+        decrementWeek: function() {
+            changeDate(-7);
             refresh();
         }
     }
@@ -102,4 +155,12 @@ function decrementDay() {
 
 function incrementDay() {
     lineChart.incrementDate();
+}
+
+function decrementWeek() {
+    lineChart.decrementWeek();
+}
+
+function incrementWeek() {
+    lineChart.incrementWeek();
 }
