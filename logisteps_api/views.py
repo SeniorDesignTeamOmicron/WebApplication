@@ -219,7 +219,7 @@ class LocationList(mixins.ListModelMixin,
         return Location.objects.all().filter(id__in=steps.values_list('location_id', flat=True))
 
     def get(self, request, *args, **kwargs):
-        query_date = self.request.query_params.get('date', None)
+        query_date = self.request.query_params.get('date', datetime.today().strftime("%m-%d-%Y"))
 
         if query_date is not None and datetime.strptime(query_date, "%m-%d-%Y") > datetime.today():
             response = Response({'message': 'date must not be in the future'}, status=status.HTTP_400_BAD_REQUEST)
