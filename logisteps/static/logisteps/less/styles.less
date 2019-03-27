@@ -124,7 +124,8 @@ button[type=submit]:hover,input[type=submit]:hover {
         }
 
         &.logo {
-            position:absolute;
+            position:fixed;
+            width: 15%;
             bottom:40px;
             border:none;
             margin: auto;
@@ -282,6 +283,7 @@ button[type=submit]:hover,input[type=submit]:hover {
 .pressure {
     display: inline-block;
     padding: 10px;
+    height: 100%;
     border: 2px solid black;
     vertical-align: top;
 
@@ -291,35 +293,35 @@ button[type=submit]:hover,input[type=submit]:hover {
 }
 
 .shoe {
+    position: relative;
     display: inline-block;
     color: rgb(73, 39, 74);
     font-size: 25px;
     font-weight: 600;
     line-height: 0px;
+    height: 100%;
 
     img {
-        height: 500px;
+        height: 100%;
         position: relative;
     }
 
     
     &.left {
         .top-sensor {
-            position: relative;
-            top: -435px;
-            height: 0px;
+            position: absolute;
+            top: 10%;
             margin: 0px;
             padding: 0px;
-            left: 42px;
+            left: 20%;
         }
 
         .bottom-sensor {
             position: relative;
-            top: -130px;
-            height: 0px;
+            bottom: 22%;
             margin: 0px;
             padding: 0px;
-            left: 90px;    
+            left: 22%;    
         }
 
     }
@@ -330,21 +332,19 @@ button[type=submit]:hover,input[type=submit]:hover {
         }
 
         .top-sensor {
-            position: relative;
-            top: -435px;
-            height: 0px;
+            position: absolute;
+            top: 10%;
             margin: 0px;
             padding: 0px;
-            left: 82px;
+            right: 20%;
         }
 
         .bottom-sensor {
             position: relative;
-            top: -130px;
-            height: 0px;
+            bottom: 22%;
             margin: 0px;
             padding: 0px;
-            left: 35px;
+            right: 15%;
         }
     }
 }
@@ -363,4 +363,21 @@ button[type=submit]:hover,input[type=submit]:hover {
 .profile-card {
     margin: auto;
     text-align: center;
+}
+
+.description {
+    
+    color: #49274A;
+    
+    h3 {
+        padding-top: 15px;
+    }
+
+    p {
+        width: 95%;
+        margin: auto;
+        padding: 5px;
+        font-size: 1.2em;
+    }
+    
 }
